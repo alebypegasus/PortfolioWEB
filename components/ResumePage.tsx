@@ -1,27 +1,38 @@
 import React from 'react';
 import { ResumePageTexts } from '../translations';
-import SkillIcon from './icons/SkillIcon';
+import { Radar, RadarChart, PolarGrid, PolarAngleAxis, Tooltip, ResponsiveContainer } from 'recharts';
+
+type Theme = 'light' | 'dark' | 'system';
 
 interface ResumePageProps {
   texts: ResumePageTexts;
+  theme?: Theme;
 }
 
-const SkillBadge: React.FC<{ skillName: string }> = ({ skillName }) => (
-  <span className="inline-flex items-center bg-white/30 dark:bg-black/30 text-blue-900 dark:text-blue-300 text-sm font-semibold mr-2 mb-2 px-3 py-1.5 rounded-full backdrop-blur-sm border border-white/20 dark:border-white/10 shadow-sm">
-    <SkillIcon skillName={skillName} className="w-4 h-4 mr-2" />
-    {skillName}
-  </span>
-);
-
 const Section: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-  <div className="mb-8 p-6 bg-white/20 dark:bg-black/20 rounded-2xl border border-white/10 backdrop-blur-sm">
+  <div className="mb-8 p-6 bg-white/10 dark:bg-black/10 rounded-2xl border border-white/10">
     <h3 className="text-2xl font-bold border-b-2 border-gray-500/30 dark:border-gray-500/50 pb-2 mb-4 text-black dark:text-white">{title}</h3>
     {children}
   </div>
 );
 
 
-const ResumePage: React.FC<ResumePageProps> = ({ texts }) => {
+const ResumePage: React.FC<ResumePageProps> = ({ texts, theme = 'system' }) => {
+  // Combine all skills into one array for the chart
+  const chartData = texts.skills.sections.flatMap(section =>
+    section.skills.map(skill => ({
+      subject: skill.name,
+      level: skill.level,
+      fullMark: 100,
+    }))
+  );
+
+  // Determine colors based on theme
+  const isDark = theme === 'dark' || (theme === 'system' && typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+  const tickColor = isDark ? '#a0a0a0' : '#4a4a4a';
+  const strokeColor = isDark ? '#f5f5f7' : '#1c1c1e';
+  const gridColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+
   return (
     <div className="text-gray-900 dark:text-gray-100 animate-fade-in-up">
       <h2 className="text-4xl md:text-5xl font-bold text-black dark:text-white mb-10">
@@ -50,12 +61,25 @@ const ResumePage: React.FC<ResumePageProps> = ({ texts }) => {
       </Section>
       
       <Section title={texts.skills.title}>
-        {texts.skills.sections.map((section, index) => (
-          <div key={index} className={index > 0 ? 'mt-4' : ''}>
-            <h4 className="font-bold text-lg mb-2 text-gray-900 dark:text-gray-200">{section.title}</h4>
-            {section.skills.map((skill, i) => <SkillBadge key={i} skillName={skill} />)}
-          </div>
-        ))}
+        <div style={{ width: '100%', height: 400 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
+              <PolarGrid stroke={gridColor} />
+              <PolarAngleAxis dataKey="subject" tick={{ fill: tickColor, fontSize: 12, textAnchor: 'middle' }} />
+              <Tooltip
+                  contentStyle={{
+                    backgroundColor: isDark ? 'rgba(30, 30, 30, 0.8)' : 'rgba(240, 242, 245, 0.8)',
+                    borderColor: gridColor,
+                    borderRadius: '12px',
+                    backdropFilter: 'blur(10px)',
+                  }}
+                  labelStyle={{ color: strokeColor }}
+                  itemStyle={{ color: strokeColor }}
+                />
+              <Radar name="Proficiência" dataKey="level" stroke="#0a84ff" fill="#0a84ff" fillOpacity={0.6} />
+            </RadarChart>
+          </ResponsiveContainer>
+        </div>
       </Section>
     </div>
   );

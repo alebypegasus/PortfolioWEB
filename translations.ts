@@ -36,7 +36,7 @@ export interface ResumePageTexts {
     title: string;
     sections: {
       title: string;
-      skills: string[];
+      skills: { name: string; level: number }[];
     }[];
   };
 }
@@ -128,6 +128,15 @@ export interface NavigationTexts {
     goToStart: string;
 }
 
+export interface DockTexts {
+  exportPdf: string;
+}
+
+export interface PageTitleTexts {
+    title: string;
+    icon: string;
+}
+
 type Translations = {
   [key in Language]: {
     cover: CoverPageTexts;
@@ -141,11 +150,37 @@ type Translations = {
     contact: ContactPageTexts;
     themeSwitcher: ThemeSwitcherTexts;
     navigation: NavigationTexts;
+    dock: DockTexts;
+    pageTitles: {
+        cover: PageTitleTexts,
+        about: PageTitleTexts,
+        resume: PageTitleTexts,
+        projects: PageTitleTexts,
+        hackintosh: PageTitleTexts,
+        operatingSystems: PageTitleTexts,
+        testimonials: PageTitleTexts,
+        noctoriunsDesign: PageTitleTexts,
+        contact: PageTitleTexts,
+    }
   };
 };
 
 export const translations: Translations = {
   pt: {
+    pageTitles: {
+        cover: { title: "Capa", icon: "HomeIcon" },
+        about: { title: "Minha História", icon: "AboutIcon" },
+        resume: { title: "Currículo", icon: "ResumeIcon" },
+        projects: { title: "Projetos", icon: "ProjectsIcon" },
+        hackintosh: { title: "Hackintosh", icon: "HackintoshIcon" },
+        operatingSystems: { title: "Sistemas Operacionais", icon: "OSIcon" },
+        testimonials: { title: "Depoimentos", icon: "TestimonialsIcon" },
+        noctoriunsDesign: { title: "Noctoriuns Design", icon: "NoctoriunsIcon" },
+        contact: { title: "Contato", icon: "ContactIcon" },
+    },
+    dock: {
+      exportPdf: "Exportar para PDF"
+    },
     cover: {
       name: 'Alessandro Ramos de Oliveira',
       title: 'Portfólio e Currículo',
@@ -194,9 +229,27 @@ export const translations: Translations = {
       skills: {
         title: 'Habilidades Técnicas',
         sections: [
-          { title: 'Frontend', skills: ['React', 'TypeScript', 'JavaScript (ES6+)', 'Tailwind CSS', 'HTML5', 'CSS3'] },
-          { title: 'Design', skills: ['Figma', 'Adobe Photoshop', 'Adobe Illustrator'] },
-          { title: 'Backend (Estudando)', skills: ['Node.js', 'Express', 'SQL'] },
+          { title: 'Frontend', skills: [
+              { name: 'React', level: 90 },
+              { name: 'TypeScript', level: 85 },
+              { name: 'JavaScript (ES6+)', level: 95 },
+              { name: 'Tailwind CSS', level: 90 },
+              { name: 'HTML5', level: 98 },
+              { name: 'CSS3', level: 95 }
+            ]
+          },
+          { title: 'Design', skills: [
+              { name: 'Figma', level: 95 },
+              { name: 'Adobe Photoshop', level: 80 },
+              { name: 'Adobe Illustrator', level: 75 }
+            ]
+          },
+          { title: 'Backend (Estudando)', skills: [
+              { name: 'Node.js', level: 60 },
+              { name: 'Express', level: 55 },
+              { name: 'SQL', level: 65 }
+            ]
+          },
         ],
       },
     },
@@ -284,9 +337,9 @@ export const translations: Translations = {
         }
     },
     themeSwitcher: {
-        light: 'Mudar para tema claro',
-        dark: 'Mudar para tema escuro',
-        system: 'Usar tema do sistema',
+        light: 'Claro (Dia)',
+        dark: 'Escuro (Noite)',
+        system: 'Automático (Sistema)',
     },
     navigation: {
         prev: 'Página Anterior',
@@ -295,6 +348,20 @@ export const translations: Translations = {
     },
   },
   en: {
+    pageTitles: {
+        cover: { title: "Cover", icon: "HomeIcon" },
+        about: { title: "My Story", icon: "AboutIcon" },
+        resume: { title: "Resume", icon: "ResumeIcon" },
+        projects: { title: "Projects", icon: "ProjectsIcon" },
+        hackintosh: { title: "Hackintosh", icon: "HackintoshIcon" },
+        operatingSystems: { title: "Operating Systems", icon: "OSIcon" },
+        testimonials: { title: "Testimonials", icon: "TestimonialsIcon" },
+        noctoriunsDesign: { title: "Noctoriuns Design", icon: "NoctoriunsIcon" },
+        contact: { title: "Contact", icon: "ContactIcon" },
+    },
+    dock: {
+      exportPdf: "Export to PDF"
+    },
     cover: {
       name: 'Alessandro Ramos de Oliveira',
       title: 'Portfolio and Resume',
@@ -343,9 +410,27 @@ export const translations: Translations = {
       skills: {
         title: 'Technical Skills',
         sections: [
-          { title: 'Frontend', skills: ['React', 'TypeScript', 'JavaScript (ES6+)', 'Tailwind CSS', 'HTML5', 'CSS3'] },
-          { title: 'Design', skills: ['Figma', 'Adobe Photoshop', 'Adobe Illustrator'] },
-          { title: 'Backend (Studying)', skills: ['Node.js', 'Express', 'SQL'] },
+          { title: 'Frontend', skills: [
+              { name: 'React', level: 90 },
+              { name: 'TypeScript', level: 85 },
+              { name: 'JavaScript (ES6+)', level: 95 },
+              { name: 'Tailwind CSS', level: 90 },
+              { name: 'HTML5', level: 98 },
+              { name: 'CSS3', level: 95 }
+            ]
+          },
+          { title: 'Design', skills: [
+              { name: 'Figma', level: 95 },
+              { name: 'Adobe Photoshop', level: 80 },
+              { name: 'Adobe Illustrator', level: 75 }
+            ]
+          },
+          { title: 'Backend (Studying)', skills: [
+              { name: 'Node.js', level: 60 },
+              { name: 'Express', level: 55 },
+              { name: 'SQL', level: 65 }
+            ]
+          },
         ],
       },
     },
@@ -433,9 +518,9 @@ export const translations: Translations = {
         }
     },
     themeSwitcher: {
-        light: 'Switch to light theme',
-        dark: 'Switch to dark theme',
-        system: 'Use system theme',
+        light: 'Light (Day)',
+        dark: 'Dark (Night)',
+        system: 'Automatic (System)',
     },
     navigation: {
         prev: 'Previous Page',

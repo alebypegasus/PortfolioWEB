@@ -15,7 +15,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, imageUrl,
       href={link}
       target="_blank"
       rel="noopener noreferrer"
-      className="block bg-white/30 dark:bg-black/30 rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 h-full flex flex-col backdrop-blur-lg border border-white/20 dark:border-white/10"
+      className="block bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 h-full flex flex-col backdrop-blur-lg border border-white/20 dark:border-white/10"
     >
       <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
       <div className="p-6 flex-grow flex flex-col">

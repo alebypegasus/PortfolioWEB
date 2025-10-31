@@ -8,10 +8,14 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       :root {
-        --bg-light: #f8f9fa;
-        --bg-dark: #050505;
-        --text-light: #1f2937;
-        --text-dark: #f9fafb;
+        --bg-light: #f6f6f6;
+        --bg-dark: #121212;
+        --text-light: #1c1c1e;
+        --text-dark: #f0f0f0;
+        --window-bg-light: rgba(255, 255, 255, 0.65);
+        --window-bg-dark: rgba(28, 28, 30, 0.6);
+        --border-light: rgba(0, 0, 0, 0.08);
+        --border-dark: rgba(255, 255, 255, 0.12);
       }
 
       body {
@@ -28,17 +32,20 @@
 
       .background-video {
         position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
         z-index: -2;
-        opacity: 0.6;
+        transform: translateX(-50%) translateY(-50%);
+        opacity: 0.15;
+        transition: opacity 0.5s ease;
       }
 
        html.dark .background-video {
-        opacity: 1;
+        opacity: 0.25;
       }
       
       .background-overlay {
@@ -48,11 +55,11 @@
         width: 100%;
         height: 100%;
         z-index: -1;
-        background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, var(--bg-light) 100%);
+        background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, var(--bg-light) 100%);
       }
 
       html.dark .background-overlay {
-         background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 50%, var(--bg-dark) 100%);
+         background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, var(--bg-dark) 100%);
       }
 
 
@@ -97,106 +104,367 @@
         background-color: rgba(128, 128, 128, 0.5);
       }
       
-      /* Gradient Border */
-      .gradient-border {
-        border: 1px solid;
-        border-image-slice: 1;
-        border-image-source: linear-gradient(to bottom right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
-      }
-       html.dark .gradient-border {
-        border-image-source: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
-      }
-
-      /* Liquid Glass Effect */
-      @keyframes liquid-reflection {
-        0% { transform: translateX(-100%) skewX(-30deg); }
-        100% { transform: translateX(200%) skewX(-30deg); }
-      }
-      @keyframes grain-shimmer {
-        0%, 100% { transform: translate(0, 0); }
-        10% { transform: translate(-5%, -10%); }
-        20% { transform: translate(-15%, 5%); }
-        30% { transform: translate(7%, -25%); }
-        40% { transform: translate(-5%, 25%); }
-        50% { transform: translate(-15%, 10%); }
-        60% { transform: translate(15%, 0%); }
-        70% { transform: translate(0%, 15%); }
-        80% { transform: translate(3%, 35%); }
-        90% { transform: translate(-10%, 10%); }
-      }
-      .liquid-glass-container {
-        position: relative;
-        overflow: hidden;
-        background-color: rgba(255, 255, 255, 0.85); /* Light theme */
-      }
-      html.dark .liquid-glass-container {
-        background-color: rgba(0, 0, 0, 0.25); /* Dark theme */
-      }
-      .liquid-glass-container::before { /* Animated Sheen/Reflection */
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 50%;
-        height: 100%;
-        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
-        animation: liquid-reflection 10s ease-in-out infinite;
-        z-index: 1;
-        pointer-events: none;
-      }
-      .liquid-glass-container::after { /* Subtle grain/distortion */
-        content: '';
-        position: absolute;
-        top: -50%; left: -50%;
-        width: 200%; height: 200%;
-        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjEwIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlRGlmZnVzZExpZ2h0aW5nIGxpZ2h0aW5nLWNvbG9yPSIjZmZmZmZmIiBzdXJmYWNlU2NhbGU9IjE1IiBkaWZmdXNlQ29uc3RhbnQ9IjEiIGtlcm5lbFVuaXRMZW5ndGg9IjEiPjxmZURpc3RhbnRMaWdodCBhenVtdXRoPSIyMjUiIGVsZXZhdGlvbj0iMzAiLz48L2ZlRGlmZnVzZExpZ2h0aW5nPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZSkiLz48L3N2Zz4=');
-        opacity: 0.02;
-        animation: grain-shimmer 20s linear infinite;
-        z-index: 1;
-        pointer-events: none;
-      }
-      .liquid-glass-container > * { /* Ensure content is above the effects */
-        position: relative;
-        z-index: 2;
+      /* macOS Window Style */
+      .macos-window {
+          background-color: var(--window-bg-light);
+          backdrop-filter: blur(50px) saturate(180%);
+          -webkit-backdrop-filter: blur(50px) saturate(180%);
+          border-radius: 24px;
+          border: 1px solid var(--border-light);
+          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
+          transition: background-color 0.5s, border 0.5s;
+          display: flex;
+          flex-direction: column;
       }
 
+      html.dark .macos-window {
+          background-color: var(--window-bg-dark);
+          border: 1px solid var(--border-dark);
+      }
+
+      .title-bar {
+          display: flex;
+          align-items: center;
+          padding: 0 16px;
+          height: 48px;
+          flex-shrink: 0;
+          border-bottom: 1px solid var(--border-light);
+          transition: border-bottom 0.5s;
+      }
+
+      html.dark .title-bar {
+          border-bottom: 1px solid var(--border-dark);
+      }
+
+      .traffic-lights {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+      }
+
+      .traffic-light {
+          width: 12px;
+          height: 12px;
+          border-radius: 50%;
+      }
+      .traffic-light.close { background-color: #ff5f56; }
+      .traffic-light.minimize { background-color: #ffbd2e; }
+      .traffic-light.maximize { background-color: #27c93f; }
+
+      .title-bar-text {
+          flex-grow: 1;
+          text-align: center;
+          font-weight: 600;
+          color: var(--text-light);
+          opacity: 0.7;
+          padding-right: 48px; /* balance traffic lights */
+      }
+
+      html.dark .title-bar-text {
+          color: var(--text-dark);
+      }
+
+      /* Dock Style */
+      .dock-container {
+          display: flex;
+          justify-content: center;
+          align-items: flex-end;
+          gap: 12px;
+          padding: 8px;
+          height: 80px;
+          position: fixed;
+          bottom: 20px;
+          left: 50%;
+          transform: translateX(-50%);
+          background-color: var(--window-bg-light);
+          backdrop-filter: blur(20px) saturate(180%);
+          -webkit-backdrop-filter: blur(20px) saturate(180%);
+          border-radius: 20px;
+          border: 1px solid var(--border-light);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+          transition: all 0.3s ease;
+      }
+
+      html.dark .dock-container {
+          background-color: rgba(40, 40, 40, 0.65);
+          border: 1px solid var(--border-dark);
+      }
+
+      .dock-item {
+          width: 52px;
+          height: 52px;
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), margin 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease;
+          position: relative;
+          background-color: transparent;
+          border: none;
+          color: var(--text-light);
+          -webkit-tap-highlight-color: transparent;
+      }
+      
+      html.dark .dock-item {
+          color: var(--text-dark);
+      }
+
+      .dock-item:hover {
+          transform: scale(1.4) translateY(-10px);
+          margin: 0 8px;
+      }
+
+      .dock-item:hover + .dock-item,
+      .dock-item:has(+ .dock-item:hover) {
+          transform: scale(1.2) translateY(-5px);
+          margin: 0 4px;
+      }
+
+      .dock-item.active::after {
+          content: '';
+          position: absolute;
+          bottom: -6px;
+          left: 50%;
+          transform: translateX(-50%);
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background-color: #0a84ff;
+      }
+
+      .dock-separator {
+          width: 1px;
+          height: 40px;
+          background-color: var(--border-light);
+          margin: 0 8px;
+          align-self: center;
+      }
+
+      html.dark .dock-separator {
+          background-color: var(--border-dark);
+      }
+      
+      .macos-input {
+        background-color: rgba(120, 120, 128, 0.12);
+        border: none;
+        border-radius: 8px;
+        padding: 12px;
+        font-size: 1rem;
+        color: var(--text-light);
+        transition: all 0.2s ease-in-out;
+        width: 100%;
+      }
+      .macos-input::placeholder {
+        color: #8e8e93;
+      }
+      html.dark .macos-input::placeholder {
+        color: #8e8e93;
+      }
+      .macos-input:focus {
+          outline: none;
+          box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.5);
+          background-color: rgba(120, 120, 128, 0.2);
+      }
+      html.dark .macos-input {
+          color: var(--text-dark);
+          background-color: rgba(120, 120, 128, 0.24);
+      }
+      html.dark .macos-input:focus {
+          background-color: rgba(120, 120, 128, 0.3);
+      }
+
+      .macos-button {
+          background-color: #007aff;
+          color: white;
+          font-weight: 600;
+          font-size: 1rem;
+          border: none;
+          border-radius: 8px;
+          padding: 12px 20px;
+          cursor: pointer;
+          transition: background-color 0.2s ease;
+          width: 100%;
+      }
+      .macos-button:hover {
+          background-color: #0a84ff;
+      }
+      .macos-button:active {
+          background-color: #006adc;
+      }
+
+      /* Theme Switcher Popover */
+      .theme-popover {
+        position: absolute;
+        bottom: 100%;
+        left: 50%;
+        transform: translateX(-50%) scale(0.95) translateY(10px);
+        margin-bottom: 16px;
+        padding: 8px;
+        background-color: var(--window-bg-light);
+        backdrop-filter: blur(20px) saturate(180%);
+        -webkit-backdrop-filter: blur(20px) saturate(180%);
+        border-radius: 16px;
+        border: 1px solid var(--border-light);
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        opacity: 0;
+        visibility: hidden;
+        transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s;
+        z-index: 10;
+        width: 220px;
+      }
+      html.dark .theme-popover {
+          background-color: rgba(40, 40, 40, 0.75);
+          border: 1px solid var(--border-dark);
+      }
+      .theme-popover.open {
+        transform: translateX(-50%) scale(1) translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+      .theme-option {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 12px;
+        border-radius: 10px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+        text-align: left;
+        width: 100%;
+        color: var(--text-light);
+      }
+      html.dark .theme-option {
+          color: var(--text-dark);
+      }
+      .theme-option:hover {
+        background-color: rgba(128, 128, 128, 0.1);
+      }
+      .theme-option.active {
+        background-color: rgba(0, 122, 255, 0.15);
+        color: #007aff;
+      }
+      html.dark .theme-option.active {
+        color: #0a84ff;
+        background-color: rgba(10, 132, 255, 0.2);
+      }
 
       /* Print Styles */
       @media print {
         @page {
           size: A4;
-          margin: 0;
+          margin: 1.5cm;
         }
+
         body {
           -webkit-print-color-adjust: exact !important;
           print-color-adjust: exact !important;
+          counter-reset: page;
         }
+
         .no-print {
           display: none !important;
         }
+
         .print-container {
           display: block !important;
         }
+
         .print-page {
-          height: 100vh;
-          width: 100%;
           page-break-after: always;
-          overflow: hidden;
+          position: relative;
+          height: auto;
+          overflow: visible;
+          background-color: #ffffff !important;
+          padding: 0;
+          margin: 0;
           box-shadow: none !important;
           border: none !important;
           border-radius: 0 !important;
-          max-height: none !important;
         }
-        .background-video, .background-overlay, .liquid-glass-container::before, .liquid-glass-container::after {
+        .print-page:last-child {
+          page-break-after: auto;
+        }
+        
+        .print-header, .print-footer {
+          position: fixed;
+          left: 1.5cm;
+          right: 1.5cm;
+          width: calc(100% - 3cm);
+          font-size: 9pt;
+          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+          color: #333333 !important;
+        }
+
+        .print-header {
+          top: 0;
+          text-align: left;
+          padding-bottom: 5px;
+          border-bottom: 1px solid #cccccc;
+        }
+
+        .print-footer {
+          bottom: 0;
+          text-align: right;
+          padding-top: 5px;
+          border-top: 1px solid #cccccc;
+        }
+        
+        .print-footer::after {
+          counter-increment: page;
+          content: "Página " counter(page);
+        }
+
+        .background-video, .background-overlay {
             display: none !important;
         }
-        body, html {
-            background-color: var(--bg-light) !important;
-            color: var(--text-light) !important;
+
+        body, .print-page, .print-page *, .recharts-text {
+          background-color: transparent !important;
+          color: #1c1c1e !important;
+          text-shadow: none !important;
         }
-        html.dark body, html.dark {
-            background-color: var(--bg-dark) !important;
-            color: var(--text-dark) !important;
+        
+        h1, h2, h3, h4, p, ul, div, section {
+           page-break-inside: avoid;
+        }
+        
+        .macos-window, .animate-fade-in-up {
+          backdrop-filter: none !important;
+          -webkit-backdrop-filter: none !important;
+          border: none !important;
+          box-shadow: none !important;
+          animation: none !important;
+          height: auto !important;
+          max-height: none !important;
+        }
+
+        div[class*="bg-white/"], div[class*="bg-black/"] {
+            background-color: #f5f5f5 !important;
+            border: 1px solid #dddddd !important;
+        }
+        
+        a {
+            color: #1c1c1e !important;
+            text-decoration: none !important;
+        }
+
+        .p-8.md\:p-10 {
+            padding: 0 !important;
+        }
+
+        .recharts-polar-grid-line line, .recharts-radar-polygon {
+            stroke: #cccccc !important;
+        }
+        .recharts-radar-polygon {
+            fill: #0a84ff !important;
+            fill-opacity: 0.3 !important;
+            stroke: #0a84ff !important;
         }
       }
 
@@ -204,17 +472,19 @@
   <script type="importmap">
 {
   "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@0.14.2/dist/index.js"
+    "react-dom/": "https://aistudiocdn.com/react-dom@^18.2.0/",
+    "react": "https://aistudiocdn.com/react@^18.2.0",
+    "react/": "https://aistudiocdn.com/react@^18.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@0.14.2/dist/index.js",
+    "recharts": "https://aistudiocdn.com/recharts@2.12.7/es6/index.js",
+    "react-is": "https://aistudiocdn.com/react-is@18.2.0/index.js"
   }
 }
 </script>
 </head>
   <body>
     <video autoplay muted loop class="background-video no-print">
-      <source src="https://static.videezy.com/system/resources/previews/000/046/872/original/4K_20.mp4" type="video/mp4">
+      <source src="https://assets.mixkit.co/videos/preview/mixkit-liquid-light-effect-on-a-black-background-4124-large.mp4" type="video/mp4">
     </video>
     <div class="background-overlay no-print"></div>
     <div id="root"></div>

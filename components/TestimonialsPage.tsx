@@ -9,7 +9,7 @@ interface TestimonialCardProps {
 }
 
 const TestimonialCard: React.FC<TestimonialCardProps> = ({ quote, name, role }) => (
-  <div className="bg-white/30 dark:bg-black/30 p-6 rounded-2xl shadow-lg backdrop-blur-lg border-t border-r border-b border-white/20 dark:border-white/10 relative overflow-hidden">
+  <div className="bg-white/20 dark:bg-black/20 p-6 rounded-2xl shadow-lg backdrop-blur-lg border-t border-r border-b border-white/20 dark:border-white/10 relative overflow-hidden">
     <div className="absolute -top-2 -left-2 text-blue-500/10 dark:text-blue-400/10">
       <QuoteIcon className="w-24 h-24" />
     </div>

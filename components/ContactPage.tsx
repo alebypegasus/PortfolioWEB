@@ -63,7 +63,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ texts }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.name}
-                className="flex items-center space-x-4 p-3 bg-white/30 dark:bg-black/30 rounded-xl hover:bg-white/50 dark:hover:bg-black/50 transition-all transform hover:scale-105 hover:shadow-xl border border-white/20 dark:border-white/10"
+                className="flex items-center space-x-4 p-3 bg-white/20 dark:bg-black/20 rounded-xl hover:bg-white/40 dark:hover:bg-black/40 transition-all transform hover:scale-105 hover:shadow-xl border border-white/20 dark:border-white/10"
               >
                 <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center">{link.icon}</div>
                 <div>
@@ -80,13 +80,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ texts }) => {
           <h3 className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-4 text-center md:text-left">{texts.form.title}</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-               <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder={texts.form.namePlaceholder} className="w-full p-3 bg-white/30 dark:bg-black/30 border border-white/20 dark:border-white/10 rounded-xl placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 backdrop-blur-sm" aria-label={texts.form.namePlaceholder} required />
-               <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder={texts.form.phonePlaceholder} className="w-full p-3 bg-white/30 dark:bg-black/30 border border-white/20 dark:border-white/10 rounded-xl placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 backdrop-blur-sm" aria-label={texts.form.phonePlaceholder} required />
+               <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder={texts.form.namePlaceholder} className="macos-input" aria-label={texts.form.namePlaceholder} required />
+               <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder={texts.form.phonePlaceholder} className="macos-input" aria-label={texts.form.phonePlaceholder} required />
             </div>
-             <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder={texts.form.emailPlaceholder} className="w-full p-3 bg-white/30 dark:bg-black/30 border border-white/20 dark:border-white/10 rounded-xl placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 backdrop-blur-sm" aria-label={texts.form.emailPlaceholder} required />
-             <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder={texts.form.subjectPlaceholder} className="w-full p-3 bg-white/30 dark:bg-black/30 border border-white/20 dark:border-white/10 rounded-xl placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 backdrop-blur-sm" aria-label={texts.form.subjectPlaceholder} required />
-            <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder={texts.form.messagePlaceholder} rows={4} className="w-full p-3 bg-white/30 dark:bg-black/30 border border-white/20 dark:border-white/10 rounded-xl placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400 backdrop-blur-sm" aria-label={texts.form.messagePlaceholder} required ></textarea>
-            <button type="submit" className="w-full bg-blue-500 text-white font-bold text-lg px-8 py-3 rounded-full shadow-lg shadow-blue-500/30 hover:bg-blue-600 transition-all transform hover:scale-105" >
+             <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder={texts.form.emailPlaceholder} className="macos-input" aria-label={texts.form.emailPlaceholder} required />
+             <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder={texts.form.subjectPlaceholder} className="macos-input" aria-label={texts.form.subjectPlaceholder} required />
+            <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder={texts.form.messagePlaceholder} rows={4} className="macos-input" aria-label={texts.form.messagePlaceholder} required ></textarea>
+            <button type="submit" className="macos-button" >
                 {texts.form.submitButton}
             </button>
           </form>
