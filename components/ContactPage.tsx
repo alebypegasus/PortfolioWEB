@@ -15,27 +15,64 @@ interface ContactPageProps {
 }
 
 const socialLinks = (texts: ContactPageTexts['socials']) => [
-  { href: "https://www.linkedin.com/", icon: <LinkedInIcon className="w-full h-full object-contain" />, name: "LinkedIn", description: texts.linkedIn },
-  { href: "https://github.com/", icon: <GitHubIcon className="w-full h-full object-contain" />, name: "GitHub", description: texts.github },
-  { href: "https://wa.me/yourphonenumber", icon: <WhatsAppIcon className="w-full h-full object-contain" />, name: "WhatsApp", description: texts.whatsapp },
-  { href: "mailto:youremail@example.com", icon: <MailIcon className="w-full h-full object-contain" />, name: "E-mail", description: texts.email },
-  { href: "https://www.instagram.com/", icon: <InstagramIcon className="w-full h-full object-contain" />, name: "Instagram", description: texts.instagram },
-  { href: "https://www.facebook.com/", icon: <FacebookIcon className="w-full h-full object-contain" />, name: "Facebook", description: texts.facebook },
-  { href: "https://www.threads.net/", icon: <ThreadsIcon className="w-full h-full object-contain" />, name: "Threads", description: texts.threads },
-  { href: "https://x.com/", icon: <XIcon className="w-full h-full object-contain" />, name: "X", description: texts.x },
+  { href: "https://www.linkedin.com/in/alebypegasus", icon: <LinkedInIcon />, name: "LinkedIn", description: texts.linkedIn },
+  { href: "https://github.com/alebypegasus", icon: <GitHubIcon />, name: "GitHub", description: texts.github },
+  { href: "https://wa.me/5521977181045", icon: <WhatsAppIcon />, name: "WhatsApp", description: texts.whatsapp },
+  { href: "mailto:contato.aledev@gmail.com", icon: <MailIcon />, name: "E-mail", description: texts.email },
+  { href: "https://www.instagram.com/alebypegasus", icon: <InstagramIcon />, name: "Instagram", description: texts.instagram },
+  { href: "https://www.facebook.com/ale.pegasus", icon: <FacebookIcon />, name: "Facebook", description: texts.facebook },
+  { href: "https://www.threads.net/@alebypegasus", icon: <ThreadsIcon />, name: "Threads", description: texts.threads },
+  { href: "https://x.com/alebypegasus", icon: <XIcon />, name: "X", description: texts.x },
 ];
 
 const ContactPage: React.FC<ContactPageProps> = ({ texts }) => {
   const links = socialLinks(texts.socials);
   const [formData, setFormData] = useState({ name: '', phone: '', email: '', subject: '', message: '' });
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validate = () => {
+    const newErrors: { [key: string]: string } = {};
+    const emailRegex = /\S+@\S+\.\S+/;
+    const phoneRegex = /^\+?[0-9\s-()]{7,}$/;
+
+    if (!formData.name.trim()) newErrors.name = texts.form.errors.nameRequired;
+    if (!formData.phone.trim()) {
+      newErrors.phone = texts.form.errors.phoneRequired;
+    } else if (!phoneRegex.test(formData.phone)) {
+      newErrors.phone = texts.form.errors.phoneInvalid;
+    }
+    if (!formData.email.trim()) {
+      newErrors.email = texts.form.errors.emailRequired;
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = texts.form.errors.emailInvalid;
+    }
+    if (!formData.subject.trim()) newErrors.subject = texts.form.errors.subjectRequired;
+    if (!formData.message.trim()) newErrors.message = texts.form.errors.messageRequired;
+    
+    return newErrors;
+  };
+
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors(prev => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
+    }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
+    setErrors({});
     alert(texts.form.submitAlert);
     setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
   };
@@ -63,9 +100,11 @@ const ContactPage: React.FC<ContactPageProps> = ({ texts }) => {
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.name}
-                className="flex items-center space-x-4 p-3 bg-white/20 dark:bg-black/20 rounded-xl hover:bg-white/40 dark:hover:bg-black/40 transition-all transform hover:scale-105 hover:shadow-xl border border-white/20 dark:border-white/10"
+                className="flex items-center space-x-3 p-2 bg-white/20 dark:bg-black/20 rounded-xl hover:bg-white/40 dark:hover:bg-black/40 transition-all transform hover:scale-105 hover:shadow-xl border border-white/20 dark:border-white/10"
               >
-                <div className="w-10 h-10 flex-shrink-0 flex items-center justify-center">{link.icon}</div>
+                <div className="social-icon-squircle">
+                  <div className="w-8 h-8 text-black dark:text-white">{link.icon}</div>
+                </div>
                 <div>
                     <span className="font-semibold text-gray-900 dark:text-gray-200 text-sm">{link.name}</span>
                     <p className="text-xs text-gray-700 dark:text-gray-400">{link.description}</p>
@@ -80,13 +119,28 @@ const ContactPage: React.FC<ContactPageProps> = ({ texts }) => {
           <h3 className="text-xl font-bold text-gray-900 dark:text-gray-200 mb-4 text-center md:text-left">{texts.form.title}</h3>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-               <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder={texts.form.namePlaceholder} className="macos-input" aria-label={texts.form.namePlaceholder} required />
-               <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder={texts.form.phonePlaceholder} className="macos-input" aria-label={texts.form.phonePlaceholder} required />
+              <div>
+                <input type="text" name="name" value={formData.name} onChange={handleInputChange} placeholder={texts.form.namePlaceholder} className={`macos-input ${errors.name ? 'error' : ''}`} aria-label={texts.form.namePlaceholder} />
+                {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+              </div>
+              <div>
+                <input type="tel" name="phone" value={formData.phone} onChange={handleInputChange} placeholder={texts.form.phonePlaceholder} className={`macos-input ${errors.phone ? 'error' : ''}`} aria-label={texts.form.phonePlaceholder} />
+                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
+              </div>
             </div>
-             <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder={texts.form.emailPlaceholder} className="macos-input" aria-label={texts.form.emailPlaceholder} required />
-             <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder={texts.form.subjectPlaceholder} className="macos-input" aria-label={texts.form.subjectPlaceholder} required />
-            <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder={texts.form.messagePlaceholder} rows={4} className="macos-input" aria-label={texts.form.messagePlaceholder} required ></textarea>
-            <button type="submit" className="macos-button" >
+            <div>
+              <input type="email" name="email" value={formData.email} onChange={handleInputChange} placeholder={texts.form.emailPlaceholder} className={`macos-input ${errors.email ? 'error' : ''}`} aria-label={texts.form.emailPlaceholder} />
+              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+            </div>
+            <div>
+              <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} placeholder={texts.form.subjectPlaceholder} className={`macos-input ${errors.subject ? 'error' : ''}`} aria-label={texts.form.subjectPlaceholder} />
+              {errors.subject && <p className="text-red-500 text-xs mt-1">{errors.subject}</p>}
+            </div>
+            <div>
+              <textarea name="message" value={formData.message} onChange={handleInputChange} placeholder={texts.form.messagePlaceholder} rows={4} className={`macos-input ${errors.message ? 'error' : ''}`} aria-label={texts.form.messagePlaceholder} ></textarea>
+              {errors.message && <p className="text-red-500 text-xs mt-1">{errors.message}</p>}
+            </div>
+            <button type="submit" className="macos-button mt-6" >
                 {texts.form.submitButton}
             </button>
           </form>

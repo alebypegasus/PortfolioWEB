@@ -1,21 +1,23 @@
 import React from 'react';
 import { ProjectsPageTexts } from '../translations';
+import GitHubIcon from './icons/GitHubIcon';
+import ExternalLinkIcon from './icons/ExternalLinkIcon';
 
 interface ProjectCardProps {
   title: string;
   description: string;
   imageUrl: string;
   tags: string[];
-  link: string;
+  repoUrl: string;
+  liveUrl: string;
+  liveButtonText: string;
+  repoButtonText: string;
 }
 
-const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, imageUrl, tags, link }) => {
+const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, imageUrl, tags, repoUrl, liveUrl, liveButtonText, repoButtonText }) => {
   return (
-    <a 
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="block bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden shadow-lg transform hover:-translate-y-2 hover:shadow-2xl transition-all duration-300 h-full flex flex-col backdrop-blur-lg border border-white/20 dark:border-white/10"
+    <div
+      className="card-hover-effect bg-white/20 dark:bg-black/20 rounded-2xl overflow-hidden shadow-lg h-full flex flex-col backdrop-blur-lg border border-white/20 dark:border-white/10"
     >
       <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
       <div className="p-6 flex-grow flex flex-col">
@@ -28,8 +30,22 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ title, description, imageUrl,
             </span>
           ))}
         </div>
+        <div className="mt-auto pt-4 flex items-center gap-3">
+            {(liveUrl && liveUrl !== '#') && (
+                 <a href={liveUrl} target="_blank" rel="noopener noreferrer" className="project-link-button primary flex-1">
+                    <ExternalLinkIcon className="w-4 h-4" />
+                    <span>{liveButtonText}</span>
+                 </a>
+            )}
+            {(repoUrl && repoUrl !== '#') && (
+                 <a href={repoUrl} target="_blank" rel="noopener noreferrer" className="project-link-button secondary flex-1">
+                    <GitHubIcon className="w-5 h-5" />
+                    <span>{repoButtonText}</span>
+                 </a>
+            )}
+        </div>
       </div>
-    </a>
+    </div>
   );
 };
 
@@ -55,7 +71,11 @@ const ProjectsPage: React.FC<ProjectsPageProps> = ({ texts }) => {
             className="project-card-animation"
             style={{ animationDelay: `${index * 100}ms` }}
           >
-            <ProjectCard {...project} />
+            <ProjectCard 
+                {...project} 
+                liveButtonText={texts.liveButtonText}
+                repoButtonText={texts.repoButtonText}
+            />
           </div>
         ))}
       </div>

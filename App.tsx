@@ -8,23 +8,24 @@ import OperatingSystemsPage from './components/OperatingSystemsPage';
 import TestimonialsPage from './components/TestimonialsPage';
 import NoctoriunsDesignPage from './components/NoctoriunsDesignPage';
 import ContactPage from './components/ContactPage';
-import Navigation from './components/Navigation';
+import Dock from './components/Navigation';
 import PrintLayout from './components/PrintLayout';
 import PhotoModal from './components/PhotoModal';
 import TitleBar from './components/TitleBar';
+import IntroAnimation from './components/IntroAnimation';
 import { translations, Language } from './translations';
 
-const pages: React.ReactElement[] = [
-  <CoverPage key="cover" />,
-  <AboutPage key="about" />,
-  <ResumePage key="resume" />,
-  <ProjectsPage key="projects" />,
-  <HackintoshPage key="hackintosh" />,
-  <OperatingSystemsPage key="os" />,
-  <TestimonialsPage key="testimonials" />,
-  <NoctoriunsDesignPage key="noctoriuns" />,
-  <ContactPage key="contact" />,
-];
+const componentMap = {
+  cover: CoverPage,
+  about: AboutPage,
+  resume: ResumePage,
+  projects: ProjectsPage,
+  hackintosh: HackintoshPage,
+  operatingSystems: OperatingSystemsPage,
+  testimonials: TestimonialsPage,
+  noctoriunsDesign: NoctoriunsDesignPage,
+  contact: ContactPage,
+};
 
 type Theme = 'light' | 'dark' | 'system';
 
@@ -34,6 +35,7 @@ const App: React.FC = () => {
   const [theme, setTheme] = useState<Theme>('system');
   const [isPrinting, setIsPrinting] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
+  const [isIntroPlaying, setIsIntroPlaying] = useState(true);
 
   const texts = translations[language];
   
@@ -48,7 +50,7 @@ const App: React.FC = () => {
     { page: 8, titleKey: 'noctoriunsDesign', ...texts.pageTitles.noctoriunsDesign },
     { page: 9, titleKey: 'contact', ...texts.pageTitles.contact },
   ];
-
+  
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') as Theme | null;
     if (savedTheme) {
@@ -57,11 +59,19 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    // This effect should only apply the theme class to the body, not html
+    // to avoid overriding the intro's black background.
     const applyTheme = () => {
-      if (theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      // Clear previous theme classes
+      document.documentElement.classList.remove('light', 'dark');
+
+      const isDarkMode = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      
+      // We add the class to the html element to be accessible by components
+      if (isDarkMode) {
         document.documentElement.classList.add('dark');
       } else {
-        document.documentElement.classList.remove('dark');
+        document.documentElement.classList.add('light');
       }
     };
 
@@ -87,7 +97,6 @@ const App: React.FC = () => {
       };
       window.addEventListener('afterprint', handleAfterPrint);
       
-      // Delay printing to allow React to re-render the print layout
       const timer = setTimeout(() => {
         window.print();
       }, 100);
@@ -111,9 +120,13 @@ const App: React.FC = () => {
     setIsPrinting(true);
   }, []);
 
+  const handleAnimationComplete = useCallback(() => {
+    setIsIntroPlaying(false);
+  }, []);
+
   const renderPage = () => {
-    const pageIndex = Math.max(0, Math.min(currentPage - 1, pages.length - 1));
-    const pageElement = pages[pageIndex];
+    const config = pageConfig.find(p => p.page === currentPage) || pageConfig[0];
+    const PageComponent = componentMap[config.titleKey as keyof typeof componentMap];
 
     const pageTexts: { [key: string]: any } = {
       cover: texts.cover,
@@ -127,23 +140,25 @@ const App: React.FC = () => {
       contact: texts.contact,
     };
     
-    const currentKey = pageConfig.find(p => p.page === currentPage)?.titleKey || 'cover';
+    const props: any = {
+      key: config.titleKey,
+      texts: pageTexts[config.titleKey],
+    };
 
-    return React.cloneElement(pageElement, {
-      key: pageIndex,
-      texts: pageTexts[currentKey],
-      language: language,
-      ...(currentKey === 'cover' && { onPhotoClick: () => setIsPhotoModalOpen(true) }),
-      ...(currentKey === 'resume' && { theme: theme })
-    });
+    if (config.titleKey === 'cover') {
+      props.language = language;
+      props.onPhotoClick = () => setIsPhotoModalOpen(true);
+    }
+    if (config.titleKey === 'resume') {
+      props.theme = theme;
+    }
+    
+    return <PageComponent {...props} />;
   };
-  
+    
   if (isPrinting) {
     const pagesToPrintKeys = ['cover', 'about', 'resume', 'contact'];
     
-    const pageComponentMap = new Map<string, React.ReactElement>();
-    pages.forEach(p => pageComponentMap.set(p.key as string, p));
-
     const pageTextsMap: { [key: string]: any } = {
       cover: texts.cover,
       about: texts.about,
@@ -152,18 +167,23 @@ const App: React.FC = () => {
     };
 
     const pagesForPdf = pagesToPrintKeys.map(key => {
-        const pageElement = pageComponentMap.get(key);
-        if (!pageElement) return null;
+        const PageComponent = componentMap[key as keyof typeof componentMap];
+        if (!PageComponent) return null;
 
-        const extraProps: { [key: string]: any } = { language };
+        const props: any = {
+          key: key,
+          texts: pageTextsMap[key],
+        };
+
         if (key === 'resume') {
-            extraProps.theme = 'light';
+            props.theme = 'light';
         }
         if (key === 'cover') {
-            extraProps.onPhotoClick = () => {};
+            props.language = language;
+            props.onPhotoClick = () => {};
         }
 
-        return React.cloneElement(pageElement, { texts: pageTextsMap[key], ...extraProps });
+        return <PageComponent {...props} />;
     }).filter((p): p is React.ReactElement => p !== null);
 
     const printHeaderTexts = {
@@ -173,16 +193,20 @@ const App: React.FC = () => {
     
     return <PrintLayout pages={pagesForPdf} headerTexts={printHeaderTexts} />;
   }
+  
+  if (isIntroPlaying) {
+    return <IntroAnimation onAnimationComplete={handleAnimationComplete} />;
+  }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8 transition-colors duration-300 relative">
-      <main className="w-full max-w-4xl macos-window h-[85vh] max-h-[900px]">
+    <div className="app-container animate-open-window">
+      <main className="w-full macos-window">
         <TitleBar title={pageConfig.find(p => p.page === currentPage)?.title || ''} />
         <div className="flex-grow overflow-y-auto p-8 md:p-10">
            {renderPage()}
         </div>
       </main>
-      <Navigation
+      <Dock
         pageConfig={pageConfig}
         currentPage={currentPage}
         setCurrentPage={handleSetPage}

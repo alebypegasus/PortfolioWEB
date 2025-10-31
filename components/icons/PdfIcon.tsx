@@ -1,12 +1,18 @@
 import React from 'react';
 
 const PdfIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
-    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-    <polyline points="14 2 14 8 20 8"></polyline>
-    <line x1="16" y1="13" x2="8" y2="13"></line>
-    <line x1="16" y1="17" x2="8" y2="17"></line>
-    <polyline points="10 9 9 9 8 9"></polyline>
+  <svg width="100%" height="100%" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+    <rect width="52" height="52" rx="12" fill="url(#paint0_linear_pdf)"/>
+    <rect x="14" y="20" width="24" height="18" rx="3" fill="#34C759" transform="rotate(-15 26 26)"/>
+    <rect x="14" y="20" width="24" height="18" rx="3" fill="#007AFF" transform="rotate(10 26 26)"/>
+     <rect x="16" y="16" width="20" height="20" rx="3" fill="white" stroke="#E5E5E5" strokeWidth="2"/>
+    <circle cx="26" cy="26" r="5" fill="#007AFF"/>
+    <defs>
+      <linearGradient id="paint0_linear_pdf" x1="26" y1="0" x2="26" y2="52" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#A8A8A8"/>
+        <stop offset="1" stopColor="#7E7E7E"/>
+      </linearGradient>
+    </defs>
   </svg>
 );
 

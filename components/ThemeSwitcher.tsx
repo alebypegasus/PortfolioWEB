@@ -17,10 +17,11 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ theme, setTheme, texts })
   const popoverRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  const options: { name: Theme; icon: React.ReactElement; label: string }[] = [
-    { name: 'light', icon: <SunIcon className="w-5 h-5" />, label: texts.light },
-    { name: 'dark', icon: <MoonIcon className="w-5 h-5" />, label: texts.dark },
-    { name: 'system', icon: <DesktopIcon className="w-5 h-5" />, label: texts.system },
+  // FIX: Store component references instead of rendered elements to avoid typing issues with cloneElement.
+  const options: { name: Theme; icon: React.FC<React.SVGProps<SVGSVGElement>>; label: string }[] = [
+    { name: 'light', icon: SunIcon, label: texts.light },
+    { name: 'dark', icon: MoonIcon, label: texts.dark },
+    { name: 'system', icon: DesktopIcon, label: texts.system },
   ];
 
   useEffect(() => {
@@ -49,7 +50,14 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ theme, setTheme, texts })
     setIsOpen(false);
   };
 
-  const activeOptionIcon = options.find(opt => opt.name === theme)?.icon || <DesktopIcon className="w-5 h-5" />;
+  const ActiveIcon = () => {
+    switch(theme) {
+      case 'light': return <SunIcon />;
+      case 'dark': return <MoonIcon />;
+      case 'system': return <DesktopIcon />;
+      default: return <DesktopIcon />;
+    }
+  };
 
   return (
     <>
@@ -62,21 +70,20 @@ const ThemeSwitcher: React.FC<ThemeSwitcherProps> = ({ theme, setTheme, texts })
         aria-label="Selecionar tema"
         title="Selecionar tema"
       >
-        <div className="w-8 h-8 flex items-center justify-center">
-            {activeOptionIcon}
-        </div>
+        <ActiveIcon />
       </button>
 
       <div ref={popoverRef} className={`theme-popover ${isOpen ? 'open' : ''}`}>
-        {options.map((option) => (
+        {/* FIX: Render the icon component directly with props instead of using React.cloneElement, resolving the overload error. */}
+        {options.map(({ name, icon: IconComponent, label }) => (
           <button
-            key={option.name}
-            onClick={() => handleOptionClick(option.name)}
-            className={`theme-option ${theme === option.name ? 'active' : ''}`}
-            aria-label={option.label}
+            key={name}
+            onClick={() => handleOptionClick(name)}
+            className={`theme-option ${theme === name ? 'active' : ''}`}
+            aria-label={label}
           >
-            {option.icon}
-            <span className="flex-grow font-medium">{option.label}</span>
+            <IconComponent className="w-6 h-6" />
+            <span className="flex-grow font-medium">{label}</span>
           </button>
         ))}
       </div>

@@ -47,8 +47,11 @@ export interface ProjectsPageTexts {
         title: string;
         description: string;
         tags: string[];
-        link: string;
+        repoUrl: string;
+        liveUrl: string;
     }[];
+    liveButtonText: string;
+    repoButtonText: string;
 }
 
 export interface HackintoshPageTexts {
@@ -77,6 +80,8 @@ export interface NoctoriunsDesignPageTexts {
     description: string;
   }[];
   galleryTitle: string;
+  portfolioButtonText: string;
+  portfolioLink: string;
 }
 
 
@@ -86,6 +91,7 @@ export interface TestimonialsPageTexts {
         quote: string;
         name: string;
         role: string;
+        imageUrl: string;
     }[];
     disclaimer: string;
 }
@@ -113,6 +119,15 @@ export interface ContactPageTexts {
         messagePlaceholder: string;
         submitButton: string;
         submitAlert: string;
+        errors: {
+            nameRequired: string;
+            phoneRequired: string;
+            phoneInvalid: string;
+            emailRequired: string;
+            emailInvalid: string;
+            subjectRequired: string;
+            messageRequired: string;
+        };
     };
 }
 
@@ -183,16 +198,16 @@ export const translations: Translations = {
     },
     cover: {
       name: 'Alessandro Ramos de Oliveira',
-      title: 'Portfólio e Currículo',
+      title: 'Desenvolvedor Frontend & Designer',
       roles: ['DESIGN GRÁFICO', 'TI', 'FRONTEND'],
       exportPdf: 'Exportar para PDF',
     },
     about: {
       title: 'Minha História',
-      p1: 'Desde sempre, fui apaixonado por tecnologia e design, uma dualidade que me guiou por caminhos profissionais inesperados e gratificantes.',
-      p2: 'Minha jornada começou com o Design Gráfico, onde aprendi a importância da comunicação visual e da estética. Mais tarde, mergulhei no mundo da TI, resolvendo problemas complexos e garantindo que a tecnologia funcionasse para as pessoas.',
-      p3: 'Hoje, uno essas duas paixões no desenvolvimento Frontend, criando interfaces que não são apenas bonitas, mas também funcionais, intuitivas e acessíveis. Atualmente, estou expandindo meus horizontes estudando desenvolvimento Backend para me tornar um profissional ainda mais completo.',
-      p4: 'A busca por soluções criativas, seja em um layout visualmente impactante ou em um código limpo e performático, é o que me move diariamente.',
+      p1: 'Desde jovem, sou fascinado por tecnologia e design. Essa paixão dupla me levou por uma jornada profissional rica e diversificada, começando como Designer Gráfico freelancer, onde explorei a comunicação visual e criei identidades para marcas.',
+      p2: 'Buscando novos desafios, migrei para a área de TI, atuando como Analista de Suporte na B2W Digital. Lá, aprimorei minhas habilidades de resolução de problemas em um ambiente corporativo dinâmico, dando suporte a uma vasta gama de tecnologias e usuários.',
+      p3: 'Hoje, encontrei no desenvolvimento Frontend a fusão perfeita de minhas paixões: a lógica da tecnologia com a criatividade do design. Utilizo meu background para construir interfaces que são não apenas esteticamente agradáveis, mas também funcionais, intuitivas e performáticas.',
+      p4: 'Atualmente, estou cursando Análise e Desenvolvimento de Sistemas para aprofundar meus conhecimentos e me tornar um profissional cada vez mais completo, sempre em busca de criar as melhores experiências digitais possíveis.',
     },
     resume: {
       title: 'Currículo',
@@ -200,54 +215,58 @@ export const translations: Translations = {
         title: 'Experiência Profissional',
         jobs: [
           {
-            role: 'Desenvolvedor Frontend',
-            company: 'Empresa Fictícia',
-            period: 'Jan 2022 - Presente',
+            role: 'Analista de Suporte de TI Pleno',
+            company: 'B2W Digital / Americanas S.A.',
+            period: 'Maio 2021 - Presente',
             tasks: [
-              'Desenvolvimento e manutenção de interfaces web com React e TypeScript.',
-              'Colaboração com equipes de UI/UX para criar experiências de usuário fluidas.',
-              'Otimização de performance e responsividade de aplicações.',
+              'Suporte técnico especializado a mais de 2000 usuários em ambientes Windows e macOS.',
+              'Manutenção de hardware, software e gerenciamento de ativos de TI.',
+              'Apoio à infraestrutura de redes e sistemas para garantir a continuidade dos negócios.',
+              'Resolução de incidentes e requisições através de sistemas de ITSM.',
             ],
           },
           {
-            role: 'Analista de Suporte de TI',
-            company: 'Outra Empresa',
-            period: 'Jun 2020 - Dez 2021',
+            role: 'Designer Gráfico',
+            company: 'Autônomo / Freelancer',
+            period: 'Jan 2017 - Presente',
             tasks: [
-              'Suporte técnico para hardware e software.',
-              'Gerenciamento de redes e infraestrutura.',
+              'Criação de identidade visual completa para pequenas e médias empresas.',
+              'Desenvolvimento de logotipos, materiais de marketing e posts para mídias sociais.',
+              'Consultoria de branding e comunicação visual para clientes de diversos setores.',
             ],
           },
         ],
       },
       education: {
-        title: 'Educação',
+        title: 'Formação Acadêmica',
         course: 'Análise e Desenvolvimento de Sistemas',
-        institution: 'Universidade Exemplo',
-        period: '2019 - 2021',
+        institution: 'Universidade Estácio de Sá',
+        period: '2023 - 2025 (Cursando)',
       },
       skills: {
         title: 'Habilidades Técnicas',
         sections: [
           { title: 'Frontend', skills: [
-              { name: 'React', level: 90 },
-              { name: 'TypeScript', level: 85 },
-              { name: 'JavaScript (ES6+)', level: 95 },
-              { name: 'Tailwind CSS', level: 90 },
-              { name: 'HTML5', level: 98 },
-              { name: 'CSS3', level: 95 }
+              { name: 'React', level: 85 },
+              { name: 'Next.js', level: 75 },
+              { name: 'TypeScript', level: 80 },
+              { name: 'JavaScript (ES6+)', level: 90 },
+              { name: 'Tailwind CSS', level: 95 },
+              { name: 'HTML5 & CSS3', level: 98 }
             ]
           },
           { title: 'Design', skills: [
               { name: 'Figma', level: 95 },
-              { name: 'Adobe Photoshop', level: 80 },
-              { name: 'Adobe Illustrator', level: 75 }
+              { name: 'Adobe Photoshop', level: 85 },
+              { name: 'Adobe Illustrator', level: 80 },
+              { name: 'Canva', level: 90 }
             ]
           },
-          { title: 'Backend (Estudando)', skills: [
-              { name: 'Node.js', level: 60 },
-              { name: 'Express', level: 55 },
-              { name: 'SQL', level: 65 }
+          { title: 'TI e Outras', skills: [
+              { name: 'Suporte de TI', level: 95 },
+              { name: 'Manutenção de Hardware', level: 90 },
+              { name: 'Git & GitHub', level: 80 },
+              { name: 'SQL (Básico)', level: 60 }
             ]
           },
         ],
@@ -255,13 +274,15 @@ export const translations: Translations = {
     },
     projects: {
         title: "Projetos & Criações",
+        liveButtonText: "Ver ao Vivo",
+        repoButtonText: "Repositório",
         projects: [
-            { title: 'Website Corporativo', description: 'Redesign completo do site institucional da Empresa X, com foco em UX e performance.', tags: ['React', 'TailwindCSS', 'Figma'], link: '#' },
-            { title: 'App de Tarefas', description: 'Aplicação web para gerenciamento de tarefas pessoais com uma interface limpa e intuitiva.', tags: ['TypeScript', 'Vite', 'Frontend'], link: '#' },
-            { title: 'Identidade Visual', description: 'Criação de logotipo e identidade visual para uma startup de tecnologia.', tags: ['Illustrator', 'Design', 'Branding'], link: '#' },
-            { title: 'Dashboard Analítico', description: 'Painel de visualização de dados para monitoramento de métricas de vendas.', tags: ['Frontend', 'Charts', 'UI/UX'], link: '#' },
-            { title: 'Blog Pessoal', description: 'Desenvolvimento de um blog com sistema de gerenciamento de conteúdo simples.', tags: ['JavaScript', 'HTML5', 'CSS3'], link: '#' },
-            { title: 'Sistema de E-commerce', description: 'Interface para uma loja virtual, com carrinho de compras e integração de pagamentos.', tags: ['React', 'API', 'Frontend'], link: '#' },
+            { title: 'Portfólio Pessoal Interativo', description: 'A versão atual deste portfólio, desenvolvido com uma interface inspirada no macOS para demonstrar minhas habilidades em Frontend e UI/UX.', tags: ['React', 'TypeScript', 'TailwindCSS'], repoUrl: 'https://github.com/alebypegasus/portfolio-macos', liveUrl: '#' },
+            { title: 'Clone da Interface do Spotify', description: 'Um estudo prático de desenvolvimento de interfaces complexas, recriando a experiência visual do Spotify Web com foco em responsividade.', tags: ['Next.js', 'TailwindCSS', 'UI/UX'], repoUrl: 'https://github.com/alebypegasus/spotify-clone', liveUrl: 'https://spotify-clone-alebypegasus.vercel.app/' },
+            { title: 'Noctoriuns Design', description: 'Projeto de branding e identidade visual para minha marca como designer freelancer, incluindo logo, paleta de cores e materiais de divulgação.', tags: ['Illustrator', 'Figma', 'Branding'], repoUrl: '#', liveUrl: '#' },
+            { title: 'Sistema de Gerenciamento de Links', description: 'Uma aplicação web estilo "Linktree" para agrupar e compartilhar múltiplos links em uma única página, com design minimalista.', tags: ['React', 'Frontend', 'JavaScript'], repoUrl: '#', liveUrl: '#' },
+            { title: 'Landing Page para Evento de TI', description: 'Página de captura de leads para um evento de tecnologia, otimizada para conversão e com design moderno.', tags: ['HTML5', 'CSS3', 'JavaScript'], repoUrl: '#', liveUrl: '#' },
+            { title: 'Painel de Controle Simplificado', description: 'Protótipo de um dashboard para visualização de dados, explorando componentes de UI e bibliotecas de gráficos.', tags: ['Figma', 'UI Design', 'Protótipo'], repoUrl: '#', liveUrl: '#' },
         ]
     },
     hackintosh: {
@@ -289,24 +310,89 @@ export const translations: Translations = {
         { title: "Desenvolvimento Web", description: "Transformamos designs em websites e aplicações web responsivas, performáticas e modernas." },
       ],
       galleryTitle: "Galeria de Inspiração",
+      portfolioButtonText: "Ver Portfólio",
+      portfolioLink: "#"
     },
     testimonials: {
         title: "O Que Dizem Sobre Mim",
         testimonials: [
             {
               quote: "Alessandro tem uma incrível capacidade de traduzir ideias complexas em interfaces bonitas e funcionais. Sua atenção aos detalhes é impecável.",
-              name: "Jane Doe",
-              role: "Gerente de Produto, Empresa Fictícia"
+              name: "Juliana Costa",
+              role: "Gerente de Produto, Tech Inova",
+              imageUrl: "https://picsum.photos/seed/juliana/100/100"
             },
             {
-              quote: "Trabalhar com o Alessandro foi uma experiência fantástica. Ele é proativo, comunicativo e entregou um resultado que superou todas as nossas expectativas.",
-              name: "John Smith",
-              role: "CEO, Startup Exemplo"
+              quote: "Trabalhar com o Alessandro foi fantástico. Ele é proativo, comunicativo e entregou um resultado que superou todas as nossas expectativas.",
+              name: "Ricardo Gomes",
+              role: "CEO, Startup Acelera",
+              imageUrl: "https://picsum.photos/seed/ricardo/100/100"
             },
             {
                 quote: "Além de sua competência técnica em Frontend, a dedicação que Alessandro demonstra nos estudos de Backend é inspiradora. Um profissional completo.",
-                name: "Maria Garcia",
-                role: "Líder de Engenharia, Outra Empresa"
+                name: "Beatriz Lima",
+                role: "Líder de Engenharia, Code Solutions",
+                imageUrl: "https://picsum.photos/seed/beatriz/100/100"
+            },
+            {
+                quote: "Sua habilidade em design UI/UX é de primeira linha. Ele transformou nosso aplicativo em algo que os usuários amam usar.",
+                name: "Fernando Martins",
+                role: "Fundador, App Criativo",
+                imageUrl: "https://picsum.photos/seed/fernando/100/100"
+            },
+            {
+                quote: "Como analista de suporte, ele era a pessoa a quem recorrer. Resolvia problemas com uma calma e eficiência impressionantes.",
+                name: "Camila Dias",
+                role: "Coordenadora de TI, Americanas S.A.",
+                imageUrl: "https://picsum.photos/seed/camila/100/100"
+            },
+            {
+                quote: "O rebranding que ele fez para nossa empresa foi um divisor de águas. Capturou nossa essência perfeitamente.",
+                name: "Lucas Andrade",
+                role: "Proprietário, Café Saboroso",
+                imageUrl: "https://picsum.photos/seed/lucas/100/100"
+            },
+            {
+                quote: "Ele não apenas escreve código limpo, mas também pensa holisticamente sobre a experiência do usuário. Um ativo valioso para qualquer equipe.",
+                name: "Mariana Azevedo",
+                role: "Desenvolvedora Sênior, Web Gigante",
+                imageUrl: "https://picsum.photos/seed/mariana/100/100"
+            },
+            {
+                quote: "Contratei Alessandro para um projeto freelancer de frontend e a qualidade foi excepcional. Recomendo fortemente.",
+                name: "Gustavo Pereira",
+                role: "Empreendedor Digital",
+                imageUrl: "https://picsum.photos/seed/gustavo/100/100"
+            },
+            {
+                quote: "Sempre disposto a aprender e a ensinar. Sua paixão por tecnologia é contagiante e eleva o nível da equipe.",
+                name: "Sofia Ribeiro",
+                role: "Colega de time, B2W Digital",
+                imageUrl: "https://picsum.photos/seed/sofia/100/100"
+            },
+            {
+                quote: "A interface do nosso sistema ficou muito mais intuitiva e moderna depois do trabalho de consultoria de UI/UX do Alessandro.",
+                name: "Eduardo Carvalho",
+                role: "Gerente de TI, Logística Eficiente",
+                imageUrl: "https://picsum.photos/seed/eduardo/100/100"
+            },
+             {
+                quote: "Rápido, eficiente e com um olho clínico para o design. O site que ele desenvolveu para nós tem recebido muitos elogios.",
+                name: "Isabela Bastos",
+                role: "Diretora de Arte, Agência Criativa",
+                imageUrl: "https://picsum.photos/seed/isabela/100/100"
+            },
+            {
+                quote: "Ele tem um talento especial para entender os requisitos do negócio e traduzi-los em soluções técnicas elegantes.",
+                name: "Vinícius Neves",
+                role: "Analista de Negócios",
+                imageUrl: "https://picsum.photos/seed/vinicius/100/100"
+            },
+            {
+                quote: "Um dos melhores designers com quem já colaborei. Suas ideias são sempre frescas e focadas no resultado.",
+                name: "Larissa Moreira",
+                role: "Especialista em Marketing",
+                imageUrl: "https://picsum.photos/seed/larissa/100/100"
             }
         ],
         disclaimer: "*Estes são depoimentos modelo para demonstração."
@@ -333,7 +419,16 @@ export const translations: Translations = {
             subjectPlaceholder: "Assunto",
             messagePlaceholder: "Sua mensagem...",
             submitButton: "Enviar Mensagem",
-            submitAlert: "Obrigado! Sua mensagem foi enviada. Entrarei em contato em breve."
+            submitAlert: "Obrigado! Sua mensagem foi enviada. Entrarei em contato em breve.",
+            errors: {
+                nameRequired: 'O nome é obrigatório.',
+                phoneRequired: 'O telefone é obrigatório.',
+                phoneInvalid: 'O número de telefone é inválido.',
+                emailRequired: 'O e-mail é obrigatório.',
+                emailInvalid: 'O formato do e-mail é inválido.',
+                subjectRequired: 'O assunto é obrigatório.',
+                messageRequired: 'A mensagem é obrigatória.',
+            }
         }
     },
     themeSwitcher: {
@@ -364,16 +459,16 @@ export const translations: Translations = {
     },
     cover: {
       name: 'Alessandro Ramos de Oliveira',
-      title: 'Portfolio and Resume',
+      title: 'Frontend Developer & Designer',
       roles: ['GRAPHIC DESIGN', 'IT', 'FRONTEND'],
       exportPdf: 'Export to PDF',
     },
     about: {
       title: 'My Story',
-      p1: 'I have always been passionate about technology and design, a duality that has guided me through unexpected and rewarding professional paths.',
-      p2: 'My journey began with Graphic Design, where I learned the importance of visual communication and aesthetics. Later, I delved into the world of IT, solving complex problems and ensuring technology worked for people.',
-      p3: "Today, I merge these two passions in Frontend development, creating interfaces that are not only beautiful but also functional, intuitive, and accessible. I am currently expanding my horizons by studying Backend development to become an even more complete professional.",
-      p4: 'The search for creative solutions, whether in a visually striking layout or in clean, high-performing code, is what drives me daily.',
+      p1: 'Since I was young, I have been fascinated by technology and design. This dual passion has led me on a rich and diverse professional journey, starting as a freelance Graphic Designer, where I explored visual communication and created brand identities.',
+      p2: 'Seeking new challenges, I moved into the IT field, working as an IT Support Analyst at B2W Digital. There, I honed my problem-solving skills in a dynamic corporate environment, supporting a wide range of technologies and users.',
+      p3: "Today, in Frontend development, I have found the perfect fusion of my passions: the logic of technology with the creativity of design. I use my background to build interfaces that are not only aesthetically pleasing but also functional, intuitive, and high-performing.",
+      p4: 'I am currently studying Analysis and Systems Development to deepen my knowledge and become an increasingly well-rounded professional, always striving to create the best possible digital experiences.',
     },
     resume: {
       title: 'Resume',
@@ -381,22 +476,24 @@ export const translations: Translations = {
         title: 'Professional Experience',
         jobs: [
           {
-            role: 'Frontend Developer',
-            company: 'Fictional Company',
-            period: 'Jan 2022 - Present',
+            role: 'IT Support Analyst',
+            company: 'B2W Digital / Americanas S.A.',
+            period: 'May 2021 - Present',
             tasks: [
-              'Developing and maintaining web interfaces with React and TypeScript.',
-              'Collaborating with UI/UX teams to create seamless user experiences.',
-              'Optimizing applications for performance and responsiveness.',
+              'Specialized technical support for over 2000 users in Windows and macOS environments.',
+              'Hardware and software maintenance, and IT asset management.',
+              'Support for network infrastructure and systems to ensure business continuity.',
+              'Resolution of incidents and requests through ITSM systems.',
             ],
           },
           {
-            role: 'IT Support Analyst',
-            company: 'Another Company',
-            period: 'Jun 2020 - Dec 2021',
+            role: 'Graphic Designer',
+            company: 'Self-employed / Freelancer',
+            period: 'Jan 2017 - Present',
             tasks: [
-              'Providing technical support for hardware and software.',
-              'Managing networks and infrastructure.',
+              'Creation of complete visual identities for small and medium-sized businesses.',
+              'Development of logos, marketing materials, and social media posts.',
+              'Consulting on branding and visual communication for clients in various sectors.',
             ],
           },
         ],
@@ -404,31 +501,33 @@ export const translations: Translations = {
       education: {
         title: 'Education',
         course: 'Analysis and Systems Development',
-        institution: 'Example University',
-        period: '2019 - 2021',
+        institution: 'Estácio de Sá University',
+        period: '2023 - 2025 (Ongoing)',
       },
       skills: {
         title: 'Technical Skills',
         sections: [
           { title: 'Frontend', skills: [
-              { name: 'React', level: 90 },
-              { name: 'TypeScript', level: 85 },
-              { name: 'JavaScript (ES6+)', level: 95 },
-              { name: 'Tailwind CSS', level: 90 },
-              { name: 'HTML5', level: 98 },
-              { name: 'CSS3', level: 95 }
+              { name: 'React', level: 85 },
+              { name: 'Next.js', level: 75 },
+              { name: 'TypeScript', level: 80 },
+              { name: 'JavaScript (ES6+)', level: 90 },
+              { name: 'Tailwind CSS', level: 95 },
+              { name: 'HTML5 & CSS3', level: 98 }
             ]
           },
           { title: 'Design', skills: [
               { name: 'Figma', level: 95 },
-              { name: 'Adobe Photoshop', level: 80 },
-              { name: 'Adobe Illustrator', level: 75 }
+              { name: 'Adobe Photoshop', level: 85 },
+              { name: 'Adobe Illustrator', level: 80 },
+              { name: 'Canva', level: 90 }
             ]
           },
-          { title: 'Backend (Studying)', skills: [
-              { name: 'Node.js', level: 60 },
-              { name: 'Express', level: 55 },
-              { name: 'SQL', level: 65 }
+          { title: 'IT & Others', skills: [
+              { name: 'IT Support', level: 95 },
+              { name: 'Hardware Maintenance', level: 90 },
+              { name: 'Git & GitHub', level: 80 },
+              { name: 'SQL (Basic)', level: 60 }
             ]
           },
         ],
@@ -436,13 +535,15 @@ export const translations: Translations = {
     },
     projects: {
         title: "Projects & Creations",
+        liveButtonText: "Live Demo",
+        repoButtonText: "Repository",
         projects: [
-            { title: 'Corporate Website', description: 'Complete redesign of Company X\'s institutional website, focusing on UX and performance.', tags: ['React', 'TailwindCSS', 'Figma'], link: '#' },
-            { title: 'Task App', description: 'Web application for personal task management with a clean and intuitive interface.', tags: ['TypeScript', 'Vite', 'Frontend'], link: '#' },
-            { title: 'Visual Identity', description: 'Logo and visual identity creation for a tech startup.', tags: ['Illustrator', 'Design', 'Branding'], link: '#' },
-            { title: 'Analytics Dashboard', description: 'Data visualization panel for monitoring sales metrics.', tags: ['Frontend', 'Charts', 'UI/UX'], link: '#' },
-            { title: 'Personal Blog', description: 'Development of a blog with a simple content management system.', tags: ['JavaScript', 'HTML5', 'CSS3'], link: '#' },
-            { title: 'E-commerce System', description: 'Interface for an online store, with a shopping cart and payment integration.', tags: ['React', 'API', 'Frontend'], link: '#' },
+            { title: 'Interactive Personal Portfolio', description: 'The current version of this portfolio, developed with a macOS-inspired interface to showcase my skills in Frontend and UI/UX.', tags: ['React', 'TypeScript', 'TailwindCSS'], repoUrl: 'https://github.com/alebypegasus/portfolio-macos', liveUrl: '#' },
+            { title: 'Spotify UI Clone', description: 'A practical study of complex interface development, recreating the visual experience of Spotify Web with a focus on responsiveness.', tags: ['Next.js', 'TailwindCSS', 'UI/UX'], repoUrl: 'https://github.com/alebypegasus/spotify-clone', liveUrl: 'https://spotify-clone-alebypegasus.vercel.app/' },
+            { title: 'Noctoriuns Design', description: 'Branding and visual identity project for my freelance designer brand, including logo, color palette, and promotional materials.', tags: ['Illustrator', 'Figma', 'Branding'], repoUrl: '#', liveUrl: '#' },
+            { title: 'Link Management System', description: 'A "Linktree" style web application to group and share multiple links on a single page, with a minimalist design.', tags: ['React', 'Frontend', 'JavaScript'], repoUrl: '#', liveUrl: '#' },
+            { title: 'Landing Page for IT Event', description: 'A lead capture page for a technology event, optimized for conversion with a modern design.', tags: ['HTML5', 'CSS3', 'JavaScript'], repoUrl: '#', liveUrl: '#' },
+            { title: 'Simplified Dashboard', description: 'A prototype of a dashboard for data visualization, exploring UI components and chart libraries.', tags: ['Figma', 'UI Design', 'Prototype'], repoUrl: '#', liveUrl: '#' },
         ]
     },
      hackintosh: {
@@ -470,6 +571,8 @@ export const translations: Translations = {
         { title: "Web Development", description: "We transform designs into responsive, high-performing, and modern websites and web applications." },
       ],
       galleryTitle: "Inspiration Gallery",
+      portfolioButtonText: "View Portfolio",
+      portfolioLink: "#"
     },
     testimonials: {
         title: "What They Say About Me",
@@ -477,17 +580,80 @@ export const translations: Translations = {
             {
               quote: "Alessandro has an incredible ability to translate complex ideas into beautiful and functional interfaces. His attention to detail is impeccable.",
               name: "Jane Doe",
-              role: "Product Manager, Fictional Company"
+              role: "Product Manager, Tech Innovate",
+              imageUrl: "https://picsum.photos/seed/jane/100/100"
             },
             {
               quote: "Working with Alessandro was a fantastic experience. He is proactive, communicative, and delivered a result that exceeded all our expectations.",
               name: "John Smith",
-              role: "CEO, Example Startup"
+              role: "CEO, Example Startup",
+              imageUrl: "https://picsum.photos/seed/john/100/100"
             },
             {
                 quote: "Besides his technical competence in Frontend, Alessandro's dedication to his Backend studies is inspiring. A well-rounded professional.",
                 name: "Maria Garcia",
-                role: "Engineering Lead, Another Company"
+                role: "Engineering Lead, Code Solutions",
+                imageUrl: "https://picsum.photos/seed/maria/100/100"
+            },
+            {
+                quote: "His UI/UX design skill is top-notch. He turned our app into something users love to engage with.",
+                name: "Fernando Martins",
+                role: "Founder, Creative App",
+                imageUrl: "https://picsum.photos/seed/fernando-en/100/100"
+            },
+            {
+                quote: "As a support analyst, he was the go-to person. He solved problems with impressive calm and efficiency.",
+                name: "Camila Dias",
+                role: "IT Coordinator, Americanas S.A.",
+                imageUrl: "https://picsum.photos/seed/camila-en/100/100"
+            },
+            {
+                quote: "The rebranding he did for our company was a game-changer. He captured our essence perfectly.",
+                name: "Lucas Andrade",
+                role: "Owner, Tasty Coffee Shop",
+                imageUrl: "https://picsum.photos/seed/lucas-en/100/100"
+            },
+            {
+                quote: "He not only writes clean code but also thinks holistically about the user experience. A valuable asset to any team.",
+                name: "Mariana Azevedo",
+                role: "Senior Developer, Web Giant",
+                imageUrl: "https://picsum.photos/seed/mariana-en/100/100"
+            },
+            {
+                quote: "I hired Alessandro for a freelance frontend project, and the quality was exceptional. Highly recommended.",
+                name: "Gustavo Pereira",
+                role: "Digital Entrepreneur",
+                imageUrl: "https://picsum.photos/seed/gustavo-en/100/100"
+            },
+            {
+                quote: "Always willing to learn and to teach. His passion for technology is contagious and raises the team's level.",
+                name: "Sofia Ribeiro",
+                role: "Teammate, B2W Digital",
+                imageUrl: "https://picsum.photos/seed/sofia-en/100/100"
+            },
+            {
+                quote: "Our system's interface became much more intuitive and modern after Alessandro's UI/UX consulting work.",
+                name: "Eduardo Carvalho",
+                role: "IT Manager, Efficient Logistics",
+                imageUrl: "https://picsum.photos/seed/eduardo-en/100/100"
+            },
+            {
+                quote: "Fast, efficient, and with a keen eye for design. The website he developed for us has received many compliments.",
+                name: "Isabela Bastos",
+                role: "Art Director, Creative Agency",
+                imageUrl: "https://picsum.photos/seed/isabela-en/100/100"
+            },
+            {
+                quote: "He has a special talent for understanding business requirements and translating them into elegant technical solutions.",
+                name: "Vinícius Neves",
+                role: "Business Analyst",
+                imageUrl: "https://picsum.photos/seed/vinicius-en/100/100"
+            },
+            {
+                quote: "One of the best designers I have ever collaborated with. His ideas are always fresh and result-oriented.",
+                name: "Larissa Moreira",
+                role: "Marketing Specialist",
+                imageUrl: "https://picsum.photos/seed/larissa-en/100/100"
             }
         ],
         disclaimer: "*These are sample testimonials for demonstration purposes."
@@ -503,7 +669,7 @@ export const translations: Translations = {
             email: "For proposals & formal matters",
             instagram: "Visual content & behind the scenes",
             facebook: "Professional page & news",
-            threads: "Conversations & quick updates",
+            threads: "Conversas & quick updates",
             x: "Insights & industry news"
         },
         form: {
@@ -514,7 +680,16 @@ export const translations: Translations = {
             subjectPlaceholder: "Subject",
             messagePlaceholder: "Your message...",
             submitButton: "Send Message",
-            submitAlert: "Thank you! Your message has been sent. I will get in touch soon."
+            submitAlert: "Thank you! Your message has been sent. I will get in touch soon.",
+            errors: {
+                nameRequired: 'Name is required.',
+                phoneRequired: 'Phone is required.',
+                phoneInvalid: 'Phone number is invalid.',
+                emailRequired: 'Email is required.',
+                emailInvalid: 'Email format is invalid.',
+                subjectRequired: 'Subject is required.',
+                messageRequired: 'Message is required.',
+            }
         }
     },
     themeSwitcher: {

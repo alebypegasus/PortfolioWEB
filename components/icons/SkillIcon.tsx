@@ -10,7 +10,8 @@ const SkillIcon: React.FC<SkillIconProps> = ({ skillName, className }) => {
     className: className || "w-5 h-5",
     fill: "currentColor",
     viewBox: "0 0 24 24",
-    'aria-hidden': "true"
+    // FIX: Changed "true" to boolean true to match the 'Booleanish' type.
+    'aria-hidden': true
   };
 
   const icons: { [key: string]: React.ReactElement } = {

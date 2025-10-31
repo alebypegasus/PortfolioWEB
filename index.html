@@ -6,10 +6,14 @@
     <meta name="description" content="Um portfólio digital interativo para Alessandro Ramos, destacando suas habilidades em Design Gráfico, TI, e desenvolvimento Frontend, além de sua jornada como estudante de Backend." />
     <title>Portfólio | Alessandro Ramos</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Orbitron:wght@700;900&family=Playfair+Display:wght@700;family=Roboto+Condensed:wght@700&display=swap" rel="stylesheet">
     <style>
       :root {
         --bg-light: #f6f6f6;
-        --bg-dark: #121212;
+        --bg-dark: #000000;
         --text-light: #1c1c1e;
         --text-dark: #f0f0f0;
         --window-bg-light: rgba(255, 255, 255, 0.65);
@@ -19,474 +23,589 @@
       }
 
       body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-        background-color: var(--bg-light);
-        color: var(--text-light);
-        transition: background-color 0.5s ease;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background-color: var(--bg-dark); /* Default to dark for the intro */
+        color: var(--text-dark);
+        transition: background-color 0.3s ease, color 0.3s ease;
+        overflow: hidden;
       }
       
-      html.dark body {
+      .dark body {
         background-color: var(--bg-dark);
         color: var(--text-dark);
       }
-
-      .background-video {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
-        height: auto;
-        z-index: -2;
-        transform: translateX(-50%) translateY(-50%);
-        opacity: 0.15;
-        transition: opacity 0.5s ease;
+      .light body {
+         background-color: var(--bg-light);
+         color: var(--text-light);
       }
 
-       html.dark .background-video {
-        opacity: 0.25;
+      #root {
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       
-      .background-overlay {
+      /* Intro Animation Styles */
+      .intro-container {
         position: fixed;
+        inset: 0;
+        z-index: 100;
+        overflow: hidden;
+        background-color: #000;
+        color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .intro-fragments-container, .intro-final-title {
+        position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        z-index: -1;
-        background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, var(--bg-light) 100%);
       }
 
-      html.dark .background-overlay {
-         background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, var(--bg-dark) 100%);
+      .intro-text-fragment {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        font-weight: 900;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.7);
+        white-space: nowrap;
+      }
+
+      .intro-final-title {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .intro-final-name {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 900;
+        font-size: clamp(2.5rem, 8vw, 6rem);
+        text-transform: uppercase;
+        letter-spacing: -0.02em;
+        color: #fff;
+        line-height: 1;
+      }
+
+      .intro-final-subtitle {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        font-size: clamp(1rem, 2.5vw, 1.5rem);
+        color: rgba(255, 255, 255, 0.8);
+        margin-top: 1rem;
+        letter-spacing: 0.1em;
+      }
+
+      .skip-intro-button {
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        padding: 0.5rem 1rem;
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        cursor: pointer;
+        backdrop-filter: blur(5px);
+        transition: background-color 0.2s ease, transform 0.2s ease, opacity 0.5s ease;
+        opacity: 0; /* Initially hidden */
+        z-index: 120;
+      }
+
+      .skip-intro-button:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
       }
 
 
-      h1, h2, h3, .font-serif {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Georgia, serif;
-        font-weight: 700;
+      /* Main App Styles */
+      .app-container {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        opacity: 0; /* Hidden initially */
       }
       
-      @keyframes fadeInUp {
-        from { 
+      .animate-open-window {
+        animation: openWindow 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes openWindow {
+        from {
           opacity: 0;
-          transform: translateY(25px);
+          transform: translateY(80px) scale(0.95);
         }
-        to { 
+        to {
           opacity: 1;
-          transform: translateY(0);
+          transform: translateY(0) scale(1);
         }
       }
-      .animate-fade-in-up {
-        animation: fadeInUp 0.7s ease-in-out forwards;
-      }
 
-      .testimonial-card-animation, .project-card-animation {
-        animation: fadeInUp 0.5s ease-out forwards;
-        opacity: 0;
-      }
-      
-      /* Scrollbar Styles */
-      ::-webkit-scrollbar {
-        width: 8px;
-      }
-      ::-webkit-scrollbar-track {
-        background: transparent;
-      }
-      ::-webkit-scrollbar-thumb {
-        background-color: rgba(128, 128, 128, 0.3);
-        border-radius: 10px;
-        border: 2px solid transparent;
-        background-clip: content-box;
-      }
-       ::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(128, 128, 128, 0.5);
-      }
-      
-      /* macOS Window Style */
       .macos-window {
-          background-color: var(--window-bg-light);
-          backdrop-filter: blur(50px) saturate(180%);
-          -webkit-backdrop-filter: blur(50px) saturate(180%);
-          border-radius: 24px;
-          border: 1px solid var(--border-light);
-          box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.15);
-          transition: background-color 0.5s, border 0.5s;
-          display: flex;
-          flex-direction: column;
+        background: var(--window-bg-light);
+        backdrop-filter: blur(20px) saturate(180%);
+        border: 1px solid var(--border-light);
+        box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transition: all 0.3s ease-in-out;
+        
+        /* Mobile First (iPhone style) */
+        width: 100%;
+        height: 100%;
+        max-width: 100vw;
+        max-height: 100vh;
+        border-radius: 0;
       }
 
-      html.dark .macos-window {
-          background-color: var(--window-bg-dark);
-          border: 1px solid var(--border-dark);
+      .dark .macos-window {
+        background: var(--window-bg-dark);
+        border: 1px solid var(--border-dark);
+      }
+      
+      /* Tablet style (iPad) */
+      @media (min-width: 768px) {
+        .macos-window {
+          width: 90vw;
+          height: 90vh;
+          max-width: 800px;
+          max-height: 1200px;
+          border-radius: 24px;
+        }
+      }
+      
+      /* Desktop style (macOS) */
+      @media (min-width: 1024px) {
+        .macos-window {
+          width: 80vw;
+          height: 85vh;
+          max-width: 1200px;
+          max-height: 800px;
+          border-radius: 12px;
+        }
       }
 
       .title-bar {
-          display: flex;
-          align-items: center;
-          padding: 0 16px;
-          height: 48px;
-          flex-shrink: 0;
-          border-bottom: 1px solid var(--border-light);
-          transition: border-bottom 0.5s;
+        height: 36px;
+        display: flex;
+        align-items: center;
+        padding: 0 12px;
+        background-color: rgba(0,0,0,0.05);
+        border-bottom: 1px solid var(--border-light);
+        flex-shrink: 0;
       }
 
-      html.dark .title-bar {
-          border-bottom: 1px solid var(--border-dark);
+      .dark .title-bar {
+         background-color: rgba(255,255,255,0.05);
+         border-bottom: 1px solid var(--border-dark);
       }
 
       .traffic-lights {
-          display: flex;
-          align-items: center;
-          gap: 8px;
+        display: flex;
+        align-items: center;
       }
-
       .traffic-light {
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin-right: 8px;
+        background-color: #ddd;
       }
-      .traffic-light.close { background-color: #ff5f56; }
+      .traffic-light.close { background-color: #ff5f57; }
       .traffic-light.minimize { background-color: #ffbd2e; }
-      .traffic-light.maximize { background-color: #27c93f; }
-
+      .traffic-light.maximize { background-color: #28c940; }
       .title-bar-text {
-          flex-grow: 1;
-          text-align: center;
-          font-weight: 600;
-          color: var(--text-light);
-          opacity: 0.7;
-          padding-right: 48px; /* balance traffic lights */
-      }
-
-      html.dark .title-bar-text {
-          color: var(--text-dark);
-      }
-
-      /* Dock Style */
-      .dock-container {
-          display: flex;
-          justify-content: center;
-          align-items: flex-end;
-          gap: 12px;
-          padding: 8px;
-          height: 80px;
-          position: fixed;
-          bottom: 20px;
-          left: 50%;
-          transform: translateX(-50%);
-          background-color: var(--window-bg-light);
-          backdrop-filter: blur(20px) saturate(180%);
-          -webkit-backdrop-filter: blur(20px) saturate(180%);
-          border-radius: 20px;
-          border: 1px solid var(--border-light);
-          box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-          transition: all 0.3s ease;
-      }
-
-      html.dark .dock-container {
-          background-color: rgba(40, 40, 40, 0.65);
-          border: 1px solid var(--border-dark);
-      }
-
-      .dock-item {
-          width: 52px;
-          height: 52px;
-          border-radius: 12px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          cursor: pointer;
-          transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1), margin 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-color 0.2s ease;
-          position: relative;
-          background-color: transparent;
-          border: none;
-          color: var(--text-light);
-          -webkit-tap-highlight-color: transparent;
-      }
-      
-      html.dark .dock-item {
-          color: var(--text-dark);
-      }
-
-      .dock-item:hover {
-          transform: scale(1.4) translateY(-10px);
-          margin: 0 8px;
-      }
-
-      .dock-item:hover + .dock-item,
-      .dock-item:has(+ .dock-item:hover) {
-          transform: scale(1.2) translateY(-5px);
-          margin: 0 4px;
-      }
-
-      .dock-item.active::after {
-          content: '';
-          position: absolute;
-          bottom: -6px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 6px;
-          height: 6px;
-          border-radius: 50%;
-          background-color: #0a84ff;
-      }
-
-      .dock-separator {
-          width: 1px;
-          height: 40px;
-          background-color: var(--border-light);
-          margin: 0 8px;
-          align-self: center;
-      }
-
-      html.dark .dock-separator {
-          background-color: var(--border-dark);
-      }
-      
-      .macos-input {
-        background-color: rgba(120, 120, 128, 0.12);
-        border: none;
-        border-radius: 8px;
-        padding: 12px;
-        font-size: 1rem;
+        flex-grow: 1;
+        text-align: center;
+        font-weight: 600;
+        font-size: 14px;
         color: var(--text-light);
-        transition: all 0.2s ease-in-out;
-        width: 100%;
+        opacity: 0.8;
       }
-      .macos-input::placeholder {
-        color: #8e8e93;
+      .dark .title-bar-text {
+        color: var(--text-dark);
       }
-      html.dark .macos-input::placeholder {
-        color: #8e8e93;
+      
+      /* Simplify title bar on mobile */
+      @media (max-width: 767px) {
+        .title-bar {
+          justify-content: center;
+          padding: 0;
+        }
+        .traffic-lights {
+          display: none;
+        }
       }
-      .macos-input:focus {
-          outline: none;
-          box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.5);
-          background-color: rgba(120, 120, 128, 0.2);
+      
+      .dock-container {
+        position: absolute;
+        bottom: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        align-items: flex-end;
+        padding: 8px;
+        background-color: rgba(255, 255, 255, 0.4);
+        backdrop-filter: blur(10px) saturate(150%);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        z-index: 10;
+        height: 68px; /* Fixed height for consistent alignment */
       }
-      html.dark .macos-input {
-          color: var(--text-dark);
-          background-color: rgba(120, 120, 128, 0.24);
+      
+      .dark .dock-container {
+        background-color: rgba(28, 28, 30, 0.4);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
-      html.dark .macos-input:focus {
-          background-color: rgba(120, 120, 128, 0.3);
+      
+      .dock-item {
+        width: 52px;
+        height: 52px;
+        margin: 0 4px;
+        cursor: pointer;
+        border-radius: 12px;
+        position: relative;
+        background: none;
+        border: none;
+        will-change: transform;
+        /* No transition here - GSAP will handle it */
+      }
+      .dock-item.active::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 6px;
+        height: 6px;
+        background-color: #888;
+        border-radius: 50%;
+      }
+      .dark .dock-item.active::after {
+        background-color: #ccc;
+      }
+      
+      .dock-separator {
+        width: 1px;
+        height: 48px;
+        background-color: rgba(0, 0, 0, 0.2);
+        margin: 0 8px;
+        align-self: center;
+      }
+      .dark .dock-separator {
+        background-color: rgba(255, 255, 255, 0.2);
       }
 
-      .macos-button {
-          background-color: #007aff;
-          color: white;
-          font-weight: 600;
-          font-size: 1rem;
-          border: none;
-          border-radius: 8px;
-          padding: 12px 20px;
-          cursor: pointer;
-          transition: background-color 0.2s ease;
-          width: 100%;
-      }
-      .macos-button:hover {
-          background-color: #0a84ff;
-      }
-      .macos-button:active {
-          background-color: #006adc;
-      }
-
-      /* Theme Switcher Popover */
       .theme-popover {
         position: absolute;
         bottom: 100%;
         left: 50%;
-        transform: translateX(-50%) scale(0.95) translateY(10px);
-        margin-bottom: 16px;
-        padding: 8px;
+        transform: translate(-50%, -10px);
+        width: 220px;
         background-color: var(--window-bg-light);
-        backdrop-filter: blur(20px) saturate(180%);
-        -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-radius: 16px;
+        backdrop-filter: blur(10px) saturate(180%);
+        border-radius: 12px;
+        padding: 8px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         border: 1px solid var(--border-light);
-        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-        display: flex;
-        flex-direction: column;
-        gap: 4px;
         opacity: 0;
         visibility: hidden;
-        transition: transform 0.2s ease, opacity 0.2s ease, visibility 0.2s;
-        z-index: 10;
-        width: 220px;
+        transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+        z-index: 20;
       }
-      html.dark .theme-popover {
-          background-color: rgba(40, 40, 40, 0.75);
-          border: 1px solid var(--border-dark);
+      
+      .dark .theme-popover {
+        background-color: var(--window-bg-dark);
+        border: 1px solid var(--border-dark);
       }
+
       .theme-popover.open {
-        transform: translateX(-50%) scale(1) translateY(0);
         opacity: 1;
         visibility: visible;
+        transform: translate(-50%, -16px);
       }
+      
       .theme-option {
         display: flex;
         align-items: center;
         gap: 12px;
-        padding: 8px 12px;
-        border-radius: 10px;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        transition: background-color 0.2s ease;
-        text-align: left;
         width: 100%;
+        padding: 8px 12px;
+        border-radius: 8px;
+        cursor: pointer;
+        background: none;
+        border: none;
+        text-align: left;
         color: var(--text-light);
       }
-      html.dark .theme-option {
-          color: var(--text-dark);
+      .dark .theme-option {
+        color: var(--text-dark);
       }
       .theme-option:hover {
-        background-color: rgba(128, 128, 128, 0.1);
+        background-color: rgba(0, 0, 0, 0.05);
       }
+      .dark .theme-option:hover {
+        background-color: rgba(255, 255, 255, 0.08);
+      }
+      
       .theme-option.active {
         background-color: rgba(0, 122, 255, 0.15);
         color: #007aff;
       }
-      html.dark .theme-option.active {
+      .dark .theme-option.active {
         color: #0a84ff;
         background-color: rgba(10, 132, 255, 0.2);
       }
 
-      /* Print Styles */
+      .animate-fade-in-up {
+        animation: fadeInUp 0.5s ease-out forwards;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      
+      .project-card-animation, .testimonial-card-animation {
+        opacity: 0;
+        animation: fadeInUp 0.6s ease-out forwards;
+      }
+
+      /* Card Hover Effect */
+      .card-hover-effect {
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+      .card-hover-effect:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 16px 32px rgba(0, 0, 0, 0.2);
+      }
+      .card-hover-effect::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -150%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          100deg,
+          rgba(255, 255, 255, 0) 20%,
+          rgba(255, 255, 255, 0.2) 50%,
+          rgba(255, 255, 255, 0) 80%
+        );
+        transform: skewX(-25deg);
+        transition: left 0.6s ease;
+      }
+      .dark .card-hover-effect::before {
+        background: linear-gradient(
+          100deg,
+          rgba(255, 255, 255, 0) 20%,
+          rgba(255, 255, 255, 0.1) 50%,
+          rgba(255, 255, 255, 0) 80%
+        );
+      }
+      .card-hover-effect:hover::before {
+        left: 150%;
+      }
+
+      /* Project Card Buttons */
+      .project-link-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        border-radius: 999px;
+        font-size: 0.875rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+        cursor: pointer;
+      }
+      .project-link-button.primary {
+        background-color: #007aff;
+        color: white;
+      }
+      .dark .project-link-button.primary {
+        background-color: #0a84ff;
+      }
+      .project-link-button.primary:hover {
+        background-color: #0071e3;
+      }
+      .dark .project-link-button.primary:hover {
+        background-color: #0077ed;
+      }
+
+      .project-link-button.secondary {
+        background-color: rgba(120, 120, 128, 0.12);
+        color: var(--text-light);
+        border-color: var(--border-light);
+      }
+      .dark .project-link-button.secondary {
+        background-color: rgba(120, 120, 128, 0.24);
+        color: var(--text-dark);
+        border-color: var(--border-dark);
+      }
+      .project-link-button.secondary:hover {
+        background-color: rgba(120, 120, 128, 0.2);
+      }
+      .dark .project-link-button.secondary:hover {
+        background-color: rgba(120, 120, 128, 0.3);
+      }
+
+      /* Print styles */
       @media print {
-        @page {
-          size: A4;
-          margin: 1.5cm;
-        }
-
         body {
-          -webkit-print-color-adjust: exact !important;
-          print-color-adjust: exact !important;
-          counter-reset: page;
+          background-color: #fff;
+          color: #000;
         }
-
         .no-print {
           display: none !important;
         }
-
         .print-container {
-          display: block !important;
+          display: block;
         }
-
         .print-page {
           page-break-after: always;
           position: relative;
-          height: auto;
-          overflow: visible;
-          background-color: #ffffff !important;
-          padding: 0;
-          margin: 0;
-          box-shadow: none !important;
-          border: none !important;
-          border-radius: 0 !important;
+          height: 100vh;
+          padding: 1in;
+          box-sizing: border-box;
+          font-size: 12pt;
         }
-        .print-page:last-child {
-          page-break-after: auto;
-        }
-        
         .print-header, .print-footer {
           position: fixed;
-          left: 1.5cm;
-          right: 1.5cm;
-          width: calc(100% - 3cm);
+          width: 100%;
           font-size: 9pt;
-          font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-          color: #333333 !important;
+          color: #666;
         }
-
         .print-header {
-          top: 0;
+          top: 0.5in;
+          left: 1in;
           text-align: left;
-          padding-bottom: 5px;
-          border-bottom: 1px solid #cccccc;
         }
-
         .print-footer {
-          bottom: 0;
-          text-align: right;
-          padding-top: 5px;
-          border-top: 1px solid #cccccc;
+          bottom: 0.5in;
+          left: 0;
+          text-align: center;
         }
-        
         .print-footer::after {
-          counter-increment: page;
-          content: "Página " counter(page);
+          content: counter(page);
         }
+        @page {
+          size: A4;
+          margin: 0;
+        }
+      }
+      
+      /* Form styles */
+      .macos-input {
+          width: 100%;
+          padding: 10px 14px;
+          border-radius: 8px;
+          border: 1px solid var(--border-light);
+          background-color: rgba(120, 120, 128, 0.12);
+          color: var(--text-light);
+          transition: all 0.2s ease;
+          box-shadow: 0 1px 2px rgba(0,0,0,0.05) inset;
+      }
+      .dark .macos-input {
+          border: 1px solid var(--border-dark);
+          background-color: rgba(120, 120, 128, 0.24);
+          color: var(--text-dark);
+          box-shadow: none;
+      }
+      .macos-input:focus {
+          outline: none;
+          border-color: #0a84ff;
+          box-shadow: 0 0 0 3px rgba(10, 132, 255, 0.3);
+      }
+      .macos-input.error {
+          border-color: #ff453a;
+          box-shadow: 0 0 0 3px rgba(255, 69, 58, 0.3);
+      }
+      
+      .macos-button {
+          width: 100%;
+          padding: 12px;
+          border-radius: 8px;
+          border: none;
+          background-color: #007aff;
+          color: white;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background-color 0.2s ease, transform 0.1s ease;
+      }
+      .dark .macos-button {
+        background-color: #0a84ff;
+      }
+      .macos-button:hover {
+        background-color: #0071e3;
+      }
+      .dark .macos-button:hover {
+        background-color: #0077ed;
+      }
+      .macos-button:active {
+        transform: scale(0.98);
+      }
 
-        .background-video, .background-overlay {
-            display: none !important;
-        }
-
-        body, .print-page, .print-page *, .recharts-text {
-          background-color: transparent !important;
-          color: #1c1c1e !important;
-          text-shadow: none !important;
-        }
-        
-        h1, h2, h3, h4, p, ul, div, section {
-           page-break-inside: avoid;
-        }
-        
-        .macos-window, .animate-fade-in-up {
-          backdrop-filter: none !important;
-          -webkit-backdrop-filter: none !important;
-          border: none !important;
-          box-shadow: none !important;
-          animation: none !important;
-          height: auto !important;
-          max-height: none !important;
-        }
-
-        div[class*="bg-white/"], div[class*="bg-black/"] {
-            background-color: #f5f5f5 !important;
-            border: 1px solid #dddddd !important;
-        }
-        
-        a {
-            color: #1c1c1e !important;
-            text-decoration: none !important;
-        }
-
-        .p-8.md\:p-10 {
-            padding: 0 !important;
-        }
-
-        .recharts-polar-grid-line line, .recharts-radar-polygon {
-            stroke: #cccccc !important;
-        }
-        .recharts-radar-polygon {
-            fill: #0a84ff !important;
-            fill-opacity: 0.3 !important;
-            stroke: #0a84ff !important;
-        }
+      /* Social Icons on Contact Page */
+      .social-icon-squircle {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 52px;
+        height: 52px;
+        flex-shrink: 0;
+        border-radius: 12px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(5px);
+        transition: all 0.2s ease;
+      }
+      .dark .social-icon-squircle {
+        background: rgba(0, 0, 0, 0.15);
+        border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
     </style>
   <script type="importmap">
 {
   "imports": {
-    "react-dom/": "https://aistudiocdn.com/react-dom@^18.2.0/",
-    "react": "https://aistudiocdn.com/react@^18.2.0",
-    "react/": "https://aistudiocdn.com/react@^18.2.0/",
-    "@google/genai": "https://aistudiocdn.com/@google/genai@0.14.2/dist/index.js",
-    "recharts": "https://aistudiocdn.com/recharts@2.12.7/es6/index.js",
-    "react-is": "https://aistudiocdn.com/react-is@18.2.0/index.js"
+    "recharts": "https://aistudiocdn.com/recharts@^3.3.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "gsap": "https://aistudiocdn.com/gsap@^3.13.0"
   }
 }
 </script>
 </head>
   <body>
-    <video autoplay muted loop class="background-video no-print">
-      <source src="https://assets.mixkit.co/videos/preview/mixkit-liquid-light-effect-on-a-black-background-4124-large.mp4" type="video/mp4">
-    </video>
-    <div class="background-overlay no-print"></div>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script type="module" src="/index.tsx"></script>
   </body>
