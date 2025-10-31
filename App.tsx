@@ -13,6 +13,8 @@ import PrintLayout from './components/PrintLayout';
 import PhotoModal from './components/PhotoModal';
 import TitleBar from './components/TitleBar';
 import IntroAnimation from './components/IntroAnimation';
+import SiriButton from './components/SiriButton';
+import SiriChatWindow from './components/SiriChatWindow';
 import { translations, Language } from './translations';
 
 const componentMap = {
@@ -36,6 +38,7 @@ const App: React.FC = () => {
   const [isPrinting, setIsPrinting] = useState(false);
   const [isPhotoModalOpen, setIsPhotoModalOpen] = useState(false);
   const [isIntroPlaying, setIsIntroPlaying] = useState(true);
+  const [isSiriChatOpen, setIsSiriChatOpen] = useState(false);
 
   const texts = translations[language];
   
@@ -199,27 +202,45 @@ const App: React.FC = () => {
   }
 
   return (
-    <div className="app-container animate-open-window">
-      <main className="w-full macos-window">
-        <TitleBar title={pageConfig.find(p => p.page === currentPage)?.title || ''} />
-        <div className="flex-grow overflow-y-auto p-8 md:p-10">
-           {renderPage()}
-        </div>
-      </main>
-      <Dock
-        pageConfig={pageConfig}
-        currentPage={currentPage}
-        setCurrentPage={handleSetPage}
-        theme={theme}
-        setTheme={setTheme}
-        themeTexts={texts.themeSwitcher}
-        language={language}
-        onSetLanguage={handleSetLanguage}
-        onExportPdf={handleExportPdf}
-        texts={texts.dock}
+    <>
+      <div className="app-container animate-open-window">
+        <main className="w-full macos-window">
+          <TitleBar title={pageConfig.find(p => p.page === currentPage)?.title || ''} />
+          <div className="flex-grow overflow-y-auto p-8 md:p-10">
+             {renderPage()}
+          </div>
+        </main>
+        <Dock
+          pageConfig={pageConfig}
+          currentPage={currentPage}
+          setCurrentPage={handleSetPage}
+          theme={theme}
+          setTheme={setTheme}
+          themeTexts={texts.themeSwitcher}
+          language={language}
+          onSetLanguage={handleSetLanguage}
+          onExportPdf={handleExportPdf}
+          texts={texts.dock}
+        />
+        <PhotoModal isOpen={isPhotoModalOpen} onClose={() => setIsPhotoModalOpen(false)} />
+      </div>
+      
+      <SiriButton onClick={() => setIsSiriChatOpen(prev => !prev)} />
+      <SiriChatWindow 
+        isOpen={isSiriChatOpen}
+        onClose={() => setIsSiriChatOpen(false)}
+        texts={texts.siri}
+        portfolioContext={JSON.stringify({
+          about: texts.about,
+          resume: texts.resume,
+          projects: texts.projects,
+          hackintosh: texts.hackintosh,
+          operatingSystems: texts.operatingSystems,
+          noctoriunsDesign: texts.noctoriunsDesign,
+          contact: texts.contact,
+        })}
       />
-      <PhotoModal isOpen={isPhotoModalOpen} onClose={() => setIsPhotoModalOpen(false)} />
-    </div>
+    </>
   );
 };
 

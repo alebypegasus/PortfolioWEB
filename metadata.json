@@ -1,5 +1,7 @@
 {
   "name": "Portfólio Alessandro Ramos",
   "description": "Um portfólio digital interativo para Alessandro Ramos, destacando suas habilidades em Design Gráfico, TI, e desenvolvimento Frontend, além de sua jornada como estudante de Backend.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [
+    "microphone"
+  ]
 }

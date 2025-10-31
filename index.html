@@ -591,6 +591,116 @@
         border: 1px solid rgba(255, 255, 255, 0.1);
       }
 
+      /* Siri Assistant Styles */
+      .siri-fab {
+        position: fixed;
+        z-index: 999;
+        cursor: grab;
+        width: 64px;
+        height: 64px;
+        transition: transform 0.2s ease-out;
+        touch-action: none; /* Prevent scrolling on touch devices */
+      }
+      .siri-fab:active {
+        cursor: grabbing;
+        transform: scale(1.1);
+      }
+
+      .siri-chat-window {
+        position: fixed;
+        z-index: 998;
+        bottom: 2rem;
+        right: 2rem;
+        width: 90vw;
+        max-width: 400px;
+        height: 70vh;
+        max-height: 600px;
+        background: var(--window-bg-light);
+        backdrop-filter: blur(25px) saturate(180%);
+        border: 1px solid var(--border-light);
+        border-radius: 24px;
+        box-shadow: 0 12px 48px rgba(0,0,0,0.25);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        transform-origin: bottom right;
+        transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .dark .siri-chat-window {
+        background: var(--window-bg-dark);
+        border: 1px solid var(--border-dark);
+      }
+      .siri-chat-window.hidden {
+        opacity: 0;
+        transform: scale(0.5);
+        pointer-events: none;
+      }
+      @media (max-width: 640px) {
+        .siri-chat-window {
+          bottom: 0;
+          right: 0;
+          width: 100vw;
+          height: 75vh;
+          max-height: none;
+          border-radius: 24px 24px 0 0;
+          transform-origin: bottom center;
+        }
+      }
+
+      .message-bubble {
+        max-width: 80%;
+        padding: 10px 14px;
+        border-radius: 18px;
+        word-wrap: break-word;
+        margin-bottom: 8px;
+      }
+      .message-bubble.user {
+        background-color: #007aff;
+        color: white;
+        border-bottom-right-radius: 4px;
+        align-self: flex-end;
+      }
+      .dark .message-bubble.user {
+        background-color: #0a84ff;
+      }
+      .message-bubble.assistant {
+        background-color: rgba(120, 120, 128, 0.16);
+        color: var(--text-light);
+        border-bottom-left-radius: 4px;
+        align-self: flex-start;
+      }
+      .dark .message-bubble.assistant {
+        background-color: rgba(120, 120, 128, 0.24);
+        color: var(--text-dark);
+      }
+      
+      .typing-indicator span {
+        display: inline-block;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: currentColor;
+        margin: 0 1px;
+        animation: typing-blink 1.4s infinite both;
+      }
+      .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+      .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+      @keyframes typing-blink {
+        0%, 80%, 100% { opacity: 0.3; }
+        40% { opacity: 1; }
+      }
+
+      .mic-button.is-listening {
+        color: #ff453a;
+        animation: mic-pulse 1.5s infinite;
+      }
+      @keyframes mic-pulse {
+        0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 69, 58, 0.4); }
+        70% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255, 69, 58, 0); }
+        100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 69, 58, 0); }
+      }
+
     </style>
   <script type="importmap">
 {
@@ -599,7 +709,8 @@
     "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
     "react/": "https://aistudiocdn.com/react@^19.2.0/",
     "react": "https://aistudiocdn.com/react@^19.2.0",
-    "gsap": "https://aistudiocdn.com/gsap@^3.13.0"
+    "gsap": "https://aistudiocdn.com/gsap@^3.13.0",
+    "@google/genai": "https://aistudiocdn.com/google-genai@^0.18.0"
   }
 }
 </script>

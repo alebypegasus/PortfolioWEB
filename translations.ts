@@ -152,6 +152,13 @@ export interface PageTitleTexts {
     icon: string;
 }
 
+export interface SiriTexts {
+    greeting: string;
+    placeholder: string;
+    suggestedQuestions: string[];
+    systemPrompt: string;
+}
+
 type Translations = {
   [key in Language]: {
     cover: CoverPageTexts;
@@ -166,6 +173,7 @@ type Translations = {
     themeSwitcher: ThemeSwitcherTexts;
     navigation: NavigationTexts;
     dock: DockTexts;
+    siri: SiriTexts;
     pageTitles: {
         cover: PageTitleTexts,
         about: PageTitleTexts,
@@ -195,6 +203,16 @@ export const translations: Translations = {
     },
     dock: {
       exportPdf: "Exportar para PDF"
+    },
+    siri: {
+        greeting: "Olá! Sou a assistente do Alessandro. Como posso ajudar? Você pode perguntar sobre a carreira, projetos ou habilidades dele.",
+        placeholder: "Pergunte algo...",
+        suggestedQuestions: [
+            "Quais são as principais habilidades de Frontend do Alessandro?",
+            "Me fale sobre a experiência profissional dele.",
+            "Quais projetos ele já desenvolveu?",
+        ],
+        systemPrompt: "Você é um assistente de IA, chamado Siri, para o portfólio de Alessandro Ramos. Seu único propósito é responder a perguntas sobre ele, sua carreira, habilidades e projetos, com base estritamente nas informações fornecidas neste contexto. Não invente informações ou forneça links externos. Seja amigável, profissional e conciso. Use o contexto a seguir para formular todas as suas respostas. CONTEXTO: ",
     },
     cover: {
       name: 'Alessandro Ramos de Oliveira',
@@ -456,6 +474,16 @@ export const translations: Translations = {
     },
     dock: {
       exportPdf: "Export to PDF"
+    },
+    siri: {
+        greeting: "Hello! I'm Alessandro's assistant. How can I help you? You can ask about his career, projects, or skills.",
+        placeholder: "Ask something...",
+        suggestedQuestions: [
+            "What are Alessandro's main Frontend skills?",
+            "Tell me about his professional experience.",
+            "What projects has he developed?",
+        ],
+        systemPrompt: "You are an AI assistant, named Siri, for Alessandro Ramos's portfolio. Your sole purpose is to answer questions about him, his career, skills, and projects, based strictly on the information provided in this context. Do not invent information or provide external links. Be friendly, professional, and concise. Use the following context to formulate all your answers. CONTEXT: ",
     },
     cover: {
       name: 'Alessandro Ramos de Oliveira',
