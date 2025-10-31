@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Um portfólio digital interativo para Alessandro Ramos, destacando suas habilidades em Design Gráfico, TI, e desenvolvimento Frontend, além de sua jornada como estudante de Backend." />
+    <title>Portfólio | Alessandro Ramos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      :root {
+        --bg-light: #f8f9fa;
+        --bg-dark: #050505;
+        --text-light: #1f2937;
+        --text-dark: #f9fafb;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+        background-color: var(--bg-light);
+        color: var(--text-light);
+        transition: background-color 0.5s ease;
+      }
+      
+      html.dark body {
+        background-color: var(--bg-dark);
+        color: var(--text-dark);
+      }
+
+      .background-video {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -2;
+        opacity: 0.6;
+      }
+
+       html.dark .background-video {
+        opacity: 1;
+      }
+      
+      .background-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        background: radial-gradient(ellipse at center, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, var(--bg-light) 100%);
+      }
+
+      html.dark .background-overlay {
+         background: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 50%, var(--bg-dark) 100%);
+      }
+
+
+      h1, h2, h3, .font-serif {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Georgia, serif;
+        font-weight: 700;
+      }
+      
+      @keyframes fadeInUp {
+        from { 
+          opacity: 0;
+          transform: translateY(25px);
+        }
+        to { 
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .animate-fade-in-up {
+        animation: fadeInUp 0.7s ease-in-out forwards;
+      }
+
+      .testimonial-card-animation, .project-card-animation {
+        animation: fadeInUp 0.5s ease-out forwards;
+        opacity: 0;
+      }
+      
+      /* Scrollbar Styles */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      ::-webkit-scrollbar-thumb {
+        background-color: rgba(128, 128, 128, 0.3);
+        border-radius: 10px;
+        border: 2px solid transparent;
+        background-clip: content-box;
+      }
+       ::-webkit-scrollbar-thumb:hover {
+        background-color: rgba(128, 128, 128, 0.5);
+      }
+      
+      /* Gradient Border */
+      .gradient-border {
+        border: 1px solid;
+        border-image-slice: 1;
+        border-image-source: linear-gradient(to bottom right, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.05));
+      }
+       html.dark .gradient-border {
+        border-image-source: linear-gradient(to bottom right, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+      }
+
+      /* Liquid Glass Effect */
+      @keyframes liquid-reflection {
+        0% { transform: translateX(-100%) skewX(-30deg); }
+        100% { transform: translateX(200%) skewX(-30deg); }
+      }
+      @keyframes grain-shimmer {
+        0%, 100% { transform: translate(0, 0); }
+        10% { transform: translate(-5%, -10%); }
+        20% { transform: translate(-15%, 5%); }
+        30% { transform: translate(7%, -25%); }
+        40% { transform: translate(-5%, 25%); }
+        50% { transform: translate(-15%, 10%); }
+        60% { transform: translate(15%, 0%); }
+        70% { transform: translate(0%, 15%); }
+        80% { transform: translate(3%, 35%); }
+        90% { transform: translate(-10%, 10%); }
+      }
+      .liquid-glass-container {
+        position: relative;
+        overflow: hidden;
+        background-color: rgba(255, 255, 255, 0.85); /* Light theme */
+      }
+      html.dark .liquid-glass-container {
+        background-color: rgba(0, 0, 0, 0.25); /* Dark theme */
+      }
+      .liquid-glass-container::before { /* Animated Sheen/Reflection */
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
+        animation: liquid-reflection 10s ease-in-out infinite;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .liquid-glass-container::after { /* Subtle grain/distortion */
+        content: '';
+        position: absolute;
+        top: -50%; left: -50%;
+        width: 200%; height: 200%;
+        background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzMDAiIGhlaWdodD0iMzAwIj48ZmlsdGVyIGlkPSJub2lzZSI+PGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuODUiIG51bU9jdGF2ZXM9IjEwIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+PGZlRGlmZnVzZExpZ2h0aW5nIGxpZ2h0aW5nLWNvbG9yPSIjZmZmZmZmIiBzdXJmYWNlU2NhbGU9IjE1IiBkaWZmdXNlQ29uc3RhbnQ9IjEiIGtlcm5lbFVuaXRMZW5ndGg9IjEiPjxmZURpc3RhbnRMaWdodCBhenVtdXRoPSIyMjUiIGVsZXZhdGlvbj0iMzAiLz48L2ZlRGlmZnVzZExpZ2h0aW5nPjwvZmlsdGVyPjxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbHRlcj0idXJsKCNub2lzZSkiLz48L3N2Zz4=');
+        opacity: 0.02;
+        animation: grain-shimmer 20s linear infinite;
+        z-index: 1;
+        pointer-events: none;
+      }
+      .liquid-glass-container > * { /* Ensure content is above the effects */
+        position: relative;
+        z-index: 2;
+      }
+
+
+      /* Print Styles */
+      @media print {
+        @page {
+          size: A4;
+          margin: 0;
+        }
+        body {
+          -webkit-print-color-adjust: exact !important;
+          print-color-adjust: exact !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+        .print-container {
+          display: block !important;
+        }
+        .print-page {
+          height: 100vh;
+          width: 100%;
+          page-break-after: always;
+          overflow: hidden;
+          box-shadow: none !important;
+          border: none !important;
+          border-radius: 0 !important;
+          max-height: none !important;
+        }
+        .background-video, .background-overlay, .liquid-glass-container::before, .liquid-glass-container::after {
+            display: none !important;
+        }
+        body, html {
+            background-color: var(--bg-light) !important;
+            color: var(--text-light) !important;
+        }
+        html.dark body, html.dark {
+            background-color: var(--bg-dark) !important;
+            color: var(--text-dark) !important;
+        }
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@0.14.2/dist/index.js"
+  }
+}
+</script>
+</head>
+  <body>
+    <video autoplay muted loop class="background-video no-print">
+      <source src="https://static.videezy.com/system/resources/previews/000/046/872/original/4K_20.mp4" type="video/mp4">
+    </video>
+    <div class="background-overlay no-print"></div>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
